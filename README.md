@@ -1,5 +1,16 @@
 # subscription-manager like fact collection
 
+We don't know if there's more services that ingest our facts.
+In the table below, there are just `candlepin` and `swatch`.
+
+However, we don't know if they would still be needed for SCA mode rhc.next will operate in.
+
+We plan on asking about:
+
+- whether they will be required for SCA,
+- in which types of connectivity they are required (CDN cert for downloading content, insights, ...).
+
+
 | fact                                            | required by             |
 |-------------------------------------------------|-------------------------|
 | aws\_account\_id                                | swatch                  |
