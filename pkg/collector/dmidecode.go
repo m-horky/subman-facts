@@ -1,13 +1,15 @@
 package collector
 
-import "fmt"
-
 type DmidecodeCollector struct {
 	data map[string]string
 }
 
 func NewDmidecodeCollector() DmidecodeCollector {
 	return DmidecodeCollector{}
+}
+
+func (c DmidecodeCollector) String() string {
+	return "Dmidecode collector"
 }
 
 // Flush ensures Collector has deleted previously collected data, if any.
@@ -28,6 +30,5 @@ func (c DmidecodeCollector) GetData() (map[string]string, error) {
 
 // collect starts the actual fact collection. It is usually invoked by GetData.
 func (c DmidecodeCollector) collect() error {
-	fmt.Println("collecting")
 	return nil
 }
