@@ -13,6 +13,7 @@ func main() {
 	collectors := []collector.Collector{
 		&collector.NetworkCollector{},
 		&collector.DmidecodeCollector{},
+		&collector.LscpuCollector{},
 	}
 	var errors []error
 	for _, factCollector := range collectors {
