@@ -172,6 +172,12 @@ func (c *NetworkCollector) collectInterfaces() error {
 	ifaces, _ := net.Interfaces()
 	for _, iface := range ifaces {
 		prefix := fmt.Sprintf("net.interface.%s", iface.Name)
+
+		ifaceMac := iface.HardwareAddr.String()
+		if ifaceMac != "" {
+			c.data[fmt.Sprintf("%s.mac_address", prefix)] = ifaceMac
+		}
+
 		addresses, err := getInterfaceAddresses(iface)
 		if err != nil {
 			// TODO Log the error

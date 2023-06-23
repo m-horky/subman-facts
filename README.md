@@ -209,7 +209,7 @@ $ make run
 | net.interface.$IFACE.ipv6\_netmask.host\_list   |                         | `network.go` (disabled) |
 | net.interface.$IFACE.ipv6\_netmask.link         |                         | `network.go` (disabled) |
 | net.interface.$IFACE.ipv6\_netmask.link\_list   |                         | `network.go` (disabled) |
-| net.interface.$IFACE.mac\_address               |                         |                         |
+| net.interface.$IFACE.mac\_address               | swatch                  | `network.go`            |
 | network.fqdn                                    | swatch (HBI)            | `network.go`            |
 | network.hostname                                |                         | `network.go` (disabled) |
 | network.ipv4\_address                           |                         | `network.go` (disabled) |
