@@ -5,7 +5,6 @@ import (
 	"net"
 	"net/netip"
 	"os"
-	"os/exec"
 	"strings"
 )
 
@@ -88,11 +87,10 @@ func (c *NetworkCollector) collectHostname() error {
 }
 
 func (c *NetworkCollector) collectFQDN() error {
-	fullRawName, err := exec.Command("/usr/bin/hostname", "-f").Output()
+	fullName, err := getCommandOutput("/usr/bin/hostname", "--fqdn,")
 	if err != nil {
 		return err
 	}
-	fullName := strings.TrimRight(string(fullRawName), "\n")
 	c.data["network.fqdn"] = fullName
 	return nil
 }

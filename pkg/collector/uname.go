@@ -2,8 +2,6 @@ package collector
 
 import (
 	"os"
-	"os/exec"
-	"strings"
 )
 
 // UnameCollector contains facts from 'uname'
@@ -78,12 +76,4 @@ func (c *UnameCollector) collect() error {
 	}
 
 	return nil
-}
-
-func getCommandOutput(cmd string, args ...string) (string, error) {
-	rawOutput, err := exec.Command(cmd, args...).Output()
-	if err != nil {
-		return "", err
-	}
-	return strings.TrimRight(string(rawOutput), "\n"), nil
 }
