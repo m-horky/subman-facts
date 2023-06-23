@@ -55,7 +55,8 @@ func (c *NetworkCollector) GetData() (map[string]string, error) {
 
 // collect starts the actual fact collection. It is usually invoked by GetData.
 func (c *NetworkCollector) collect() error {
-	err := c.collectHostname()
+	// Uncomment to collect network.hostname
+	/*err := c.collectHostname()
 	if err != nil {
 		// TODO Log the error
 	}
@@ -64,13 +65,15 @@ func (c *NetworkCollector) collect() error {
 		// TODO Log the error
 	}
 	err = c.collectFQDN_shell()
+	}*/
 	if err != nil {
 		// TODO Log the error
 	}
-	err = c.collectAddresses()
+	// Uncomment to collect network.ipv4_address and network.ipv6_address
+	/*err = c.collectAddresses()
 	if err != nil {
 		// TODO Log the error
-	}
+	}*/
 
 	err = c.collectInterfaces()
 	if err != nil {
@@ -219,34 +222,34 @@ func (c *NetworkCollector) collectInterfaces() error {
 			c.data[fmt.Sprintf("%s.ipv4_address", prefix)] = v4a[0]
 			c.data[fmt.Sprintf("%s.ipv4_address_list", prefix)] = strings.Join(v4a, ", ")
 		}
-		if len(v4m) > 0 {
+		/*if len(v4m) > 0 {
 			c.data[fmt.Sprintf("%s.ipv4_netmask", prefix)] = v4m[0]
 			c.data[fmt.Sprintf("%s.ipv4_netmask_list", prefix)] = strings.Join(v4m, ", ")
-		}
+		}*/
 		if len(v6ga) > 0 {
 			c.data[fmt.Sprintf("%s.ipv6_address.global", prefix)] = v6ga[0]
 			c.data[fmt.Sprintf("%s.ipv6_address.global_list", prefix)] = strings.Join(v6ga, ", ")
 		}
-		if len(v6gm) > 0 {
+		/*if len(v6gm) > 0 {
 			c.data[fmt.Sprintf("%s.ipv6_netmask.global", prefix)] = v6gm[0]
 			c.data[fmt.Sprintf("%s.ipv6_netmask.global_list", prefix)] = strings.Join(v6gm, ", ")
-		}
+		}*/
 		if len(v6la) > 0 {
 			c.data[fmt.Sprintf("%s.ipv6_address.link", prefix)] = v6la[0]
 			c.data[fmt.Sprintf("%s.ipv6_address.link_list", prefix)] = strings.Join(v6la, ", ")
 		}
-		if len(v6lm) > 0 {
+		/*if len(v6lm) > 0 {
 			c.data[fmt.Sprintf("%s.ipv6_netmask.link", prefix)] = v6lm[0]
 			c.data[fmt.Sprintf("%s.ipv6_netmask.link_list", prefix)] = strings.Join(v6lm, ", ")
-		}
-		if len(v6ha) > 0 {
+		}*/
+		/*if len(v6ha) > 0 {
 			c.data[fmt.Sprintf("%s.ipv6_address.host", prefix)] = v6ha[0]
 			c.data[fmt.Sprintf("%s.ipv6_address.host_list", prefix)] = strings.Join(v6ha, ", ")
-		}
-		if len(v6hm) > 0 {
+		}*/
+		/*if len(v6hm) > 0 {
 			c.data[fmt.Sprintf("%s.ipv6_netmask.host", prefix)] = v6hm[0]
 			c.data[fmt.Sprintf("%s.ipv6_netmask.host_list", prefix)] = strings.Join(v6hm, ", ")
-		}
+		}*/
 
 	}
 

@@ -173,8 +173,8 @@ We plan on asking about:
 | memory.swaptotal                                |                         |
 | net.interface.$IFACE.ipv4\_address              | swatch (HBI)            | `network.go`            |
 | net.interface.$IFACE.ipv4\_address\_list        | swatch (HBI)            | `network.go`            |
-| net.interface.$IFACE.ipv4\_broadcast            |                         | `network.go` (disabled) |
-| net.interface.$IFACE.ipv4\_broadcast\_list      |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv4\_broadcast            |                         |                         |
+| net.interface.$IFACE.ipv4\_broadcast\_list      |                         |                         |
 | net.interface.$IFACE.ipv4\_netmask              |                         | `network.go` (disabled) |
 | net.interface.$IFACE.ipv4\_netmask\_list        |                         | `network.go` (disabled) |
 | net.interface.$IFACE.ipv6\_address.global       | swatch (HBI)            | `network.go`            |
