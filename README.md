@@ -219,11 +219,11 @@ We plan on asking about:
 | proc\_stat.btime                                |                         |
 | system.certificate\_version                     |                         |
 | system.default\_locale                          |                         |
-| uname.machine                                   | swatch (HBI)            |
-| uname.nodename                                  |                         |
-| uname.release                                   |                         |
-| uname.sysname                                   |                         |
-| uname.version                                   |                         |
+| uname.machine                                   | swatch (HBI)            | `uname.go`              |
+| uname.nodename                                  |                         | `uname.go`              |
+| uname.release                                   |                         | `uname.go`              |
+| uname.sysname                                   |                         | `uname.go`              |
+| uname.version                                   |                         | `uname.go`              |
 | virt.host\_type                                 |                         |
 | virt.is\_guest                                  | swatch (HBI)            |
 | virt.uuid                                       | candlepin, swatch       |

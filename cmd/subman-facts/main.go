@@ -15,6 +15,7 @@ func main() {
 		&collector.DmidecodeCollector{},
 		&collector.LscpuCollector{},
 		&collector.DistributionCollector{},
+		&collector.UnameCollector{},
 	}
 	var errors []error
 	for _, factCollector := range collectors {
