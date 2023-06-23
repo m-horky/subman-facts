@@ -3,6 +3,14 @@
 We don't know if there's more services that ingest our facts.
 In the table below, there are just `candlepin` and `swatch`.
 
+<!-- 
+SWatch keeps most (?) of its facts here:
+https://github.com/RedHatInsights/rhsm-subscriptions/blob/11e4df8f21da2ce6be1e46a1e97c4975d96b3f8c/swatch-system-conduit/src/main/java/org/candlepin/subscriptions/conduit/InventoryController.java#L659
+
+It is also track at our internal document:
+https://docs.google.com/document/d/1WvuhWEmESDDC9zFv2PeE9yuUXhFffGI20zudpq7OFJo/edit
+-->
+
 However, we don't know if they would still be needed for SCA mode rhc.next will operate in.
 
 We plan on asking about:
@@ -29,7 +37,7 @@ $ make run
 | azure\_instance\_id                             | swatch                  |
 | azure\_offer                                    | swatch                  |
 | azure\_sku                                      | swatch                  |
-| gcp\_instance\_id                               | swatch                  |
+| azure\_offer                                    | swatch                  |
 | cpu.core(s)\_per\_socket                        | candlepin, swatch (HBI) |
 | cpu.cpu(s)                                      |                         |
 | cpu.cpu\_socket(s)                              | candlepin, swatch (HBI) |
@@ -137,6 +145,9 @@ $ make run
 | dmi.system.uuid                                 | swatch (HBI)            |
 | dmi.system.version                              |                         |
 | dmi.system.wake-up\_type                        |                         |
+| gcp\_instance\_id                               | swatch                  |
+| gcp\_license\_codes                             | swatch                  |
+| insights_id                                     | swatch                  |
 | last\_boot                                      |                         |
 | lscpu.address\_sizes                            |                         |
 | lscpu.architecture                              |                         |
