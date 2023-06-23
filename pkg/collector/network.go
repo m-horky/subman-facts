@@ -25,6 +25,7 @@ type IPWithMask struct {
 	Type    IPAddressType
 }
 
+// NetworkCollector contains facts from 'ip' command
 type NetworkCollector struct {
 	data map[string]string
 }

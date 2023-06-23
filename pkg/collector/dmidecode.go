@@ -4,10 +4,6 @@ type DmidecodeCollector struct {
 	data map[string]string
 }
 
-func NewDmidecodeCollector() DmidecodeCollector {
-	return DmidecodeCollector{}
-}
-
 func (c DmidecodeCollector) String() string {
 	return "Dmidecode collector"
 }

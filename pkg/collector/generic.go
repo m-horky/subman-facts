@@ -8,3 +8,6 @@ type Collector interface {
 	// Flush ensures Collector has deleted previously collected data, if any.
 	Flush()
 }
+
+// FIXME Currently, the collectors have no way of specifying defaults for some
+//  key-value pair. When they do, they must do so at start of '.collect()'.

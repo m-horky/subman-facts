@@ -26,9 +26,9 @@ We plan on asking about:
 | cpu.cpu\_socket(s)                              | candlepin, swatch (HBI) |
 | cpu.thread(s)\_per\_core                        |                         |
 | cpu.topology\_source                            |                         |
-| distribution.id                                 |                         |
-| distribution.name                               | swatch (HBI)            |
-| distribution.version                            | swatch (HBI)            |
+| distribution.id                                 |                         | `distribution.go`       |
+| distribution.name                               | swatch (HBI)            | `distribution.go`       |
+| distribution.version                            | swatch (HBI)            | `distribution.go`       |
 | distribution.version.modifier                   |                         |
 | dmi.baseboard.chassis\_handle                   |                         |
 | dmi.baseboard.contained\_object\_handles        |                         |
