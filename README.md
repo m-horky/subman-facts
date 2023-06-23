@@ -11,8 +11,8 @@ We plan on asking about:
 - in which types of connectivity they are required (CDN cert for downloading content, insights, ...).
 
 
-| fact                                            | required by             |
-|-------------------------------------------------|-------------------------|
+| fact                                            | required by             | implemented             |
+|-------------------------------------------------|-------------------------|-------------------------|
 | aws\_account\_id                                | swatch                  |
 | aws\_billing\_products                          | swatch                  |
 | aws\_instance\_id                               | swatch                  |
@@ -171,29 +171,29 @@ We plan on asking about:
 | lscpu.vulnerability\_tsx\_async\_abort          |                         |
 | memory.memtotal                                 | candlepin, swatch (HBI) |
 | memory.swaptotal                                |                         |
-| net.interface.$IFACE.ipv4\_address              | swatch (HBI)            |
-| net.interface.$IFACE.ipv4\_address\_list        | swatch (HBI)            |
-| net.interface.$IFACE.ipv4\_broadcast            |                         |
-| net.interface.$IFACE.ipv4\_broadcast\_list      |                         |
-| net.interface.$IFACE.ipv4\_netmask              |                         |
-| net.interface.$IFACE.ipv4\_netmask\_list        |                         |
-| net.interface.$IFACE.ipv6\_address.global       | swatch (HBI)            |
-| net.interface.$IFACE.ipv6\_address.global\_list | swatch (HBI)            |
-| net.interface.$IFACE.ipv6\_address.host         |                         |
-| net.interface.$IFACE.ipv6\_address.host\_list   |                         |
-| net.interface.$IFACE.ipv6\_address.link         | swatch (HBI)            |
-| net.interface.$IFACE.ipv6\_address.link\_list   | swatch (HBI)            |
-| net.interface.$IFACE.ipv6\_netmask.global       |                         |
-| net.interface.$IFACE.ipv6\_netmask.global\_list |                         |
-| net.interface.$IFACE.ipv6\_netmask.host         |                         |
-| net.interface.$IFACE.ipv6\_netmask.host\_list   |                         |
-| net.interface.$IFACE.ipv6\_netmask.link         |                         |
-| net.interface.$IFACE.ipv6\_netmask.link\_list   |                         |
-| net.interface.$IFACE.mac\_address               |                         |
-| network.fqdn                                    | swatch (HBI)            |
-| network.hostname                                |                         |
-| network.ipv4\_address                           |                         |
-| network.ipv6\_address                           |                         |
+| net.interface.$IFACE.ipv4\_address              | swatch (HBI)            | `network.go`            |
+| net.interface.$IFACE.ipv4\_address\_list        | swatch (HBI)            | `network.go`            |
+| net.interface.$IFACE.ipv4\_broadcast            |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv4\_broadcast\_list      |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv4\_netmask              |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv4\_netmask\_list        |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv6\_address.global       | swatch (HBI)            | `network.go`            |
+| net.interface.$IFACE.ipv6\_address.global\_list | swatch (HBI)            | `network.go`            |
+| net.interface.$IFACE.ipv6\_address.host         |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv6\_address.host\_list   |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv6\_address.link         | swatch (HBI)            | `network.go`            |
+| net.interface.$IFACE.ipv6\_address.link\_list   | swatch (HBI)            | `network.go`            |
+| net.interface.$IFACE.ipv6\_netmask.global       |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv6\_netmask.global\_list |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv6\_netmask.host         |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv6\_netmask.host\_list   |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv6\_netmask.link         |                         | `network.go` (disabled) |
+| net.interface.$IFACE.ipv6\_netmask.link\_list   |                         | `network.go` (disabled) |
+| net.interface.$IFACE.mac\_address               |                         |                         |
+| network.fqdn                                    | swatch (HBI)            | `network.go`            |
+| network.hostname                                |                         | `network.go` (disabled) |
+| network.ipv4\_address                           |                         | `network.go` (disabled) |
+| network.ipv6\_address                           |                         | `network.go` (disabled) |
 | proc\_cpuinfo.common.address\_sizes             |                         |
 | proc\_cpuinfo.common.bogomips                   |                         |
 | proc\_cpuinfo.common.bugs                       |                         |
