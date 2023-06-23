@@ -11,6 +11,15 @@ We plan on asking about:
 - in which types of connectivity they are required (CDN cert for downloading content, insights, ...).
 
 
+## Running
+
+```console
+$ make run
+```
+
+
+## The table
+
 | fact                                            | required by             | implemented             |
 |-------------------------------------------------|-------------------------|-------------------------|
 | aws\_account\_id                                | swatch                  |
