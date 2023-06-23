@@ -2,7 +2,6 @@ package collector
 
 import (
 	"fmt"
-	"github.com/Showmax/go-fqdn"
 	"net"
 	"net/netip"
 	"os"
@@ -59,13 +58,8 @@ func (c *NetworkCollector) collect() error {
 	/*err := c.collectHostname()
 	if err != nil {
 		// TODO Log the error
-	}
-	err = c.collectFQDN_lib()
-	if err != nil {
-		// TODO Log the error
-	}
-	err = c.collectFQDN_shell()
 	}*/
+	err := c.collectFQDN()
 	if err != nil {
 		// TODO Log the error
 	}
@@ -92,22 +86,13 @@ func (c *NetworkCollector) collectHostname() error {
 	return nil
 }
 
-func (c *NetworkCollector) collectFQDN_lib() error {
-	fullName, err := fqdn.FqdnHostname()
-	if err != nil {
-		return err
-	}
-	c.data["network.fqdn(lib)"] = fullName
-	return nil
-}
-
-func (c *NetworkCollector) collectFQDN_shell() error {
+func (c *NetworkCollector) collectFQDN() error {
 	fullRawName, err := exec.Command("/usr/bin/hostname", "-f").Output()
 	if err != nil {
 		return err
 	}
 	fullName := strings.TrimRight(string(fullRawName), "\n")
-	c.data["network.fqdn(shell)"] = fullName
+	c.data["network.fqdn"] = fullName
 	return nil
 }
 
