@@ -1,6 +1,7 @@
 package collector
 
 import (
+	"os"
 	"os/exec"
 	"strings"
 )
@@ -25,4 +26,14 @@ func getCommandOutput(cmd string, args ...string) (string, error) {
 		return "", err
 	}
 	return strings.TrimRight(string(rawOutput), "\n"), nil
+}
+
+// getFileOutput reads a file and returns a slice of lines in it
+func getFileOutput(path string) ([]string, error) {
+	rawOutput, err := os.ReadFile(path)
+	if err != nil {
+		return make([]string, 0), err
+	}
+	result := strings.Split(string(rawOutput), "\n")
+	return result, nil
 }

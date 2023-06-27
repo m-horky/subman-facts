@@ -16,6 +16,7 @@ func main() {
 		&collector.LscpuCollector{},
 		&collector.DistributionCollector{},
 		&collector.UnameCollector{},
+		&collector.MemoryCollector{},
 	}
 	var errors []error
 	for _, factCollector := range collectors {
