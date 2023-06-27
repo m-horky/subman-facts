@@ -50,9 +50,9 @@ func (c *MemoryCollector) collect() error {
 		if key == "MemTotal" {
 			c.data["memory.memtotal"] = value
 		}
-		if key == "SwapTotal" {
-			c.data["memory.swaptotal"] = value
-		}
+		// if key == "SwapTotal" {
+		// 	c.data["memory.swaptotal"] = value
+		// }
 	}
 	return nil
 }
