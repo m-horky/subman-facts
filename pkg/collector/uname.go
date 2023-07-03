@@ -1,6 +1,7 @@
 package collector
 
 import (
+	"git.sr.ht/~spc/go-log"
 	"os"
 )
 
@@ -35,42 +36,46 @@ func (c *UnameCollector) GetData() (map[string]string, error) {
 // collect starts the actual fact collection. It is usually invoked by GetData.
 func (c *UnameCollector) collect() error {
 	fInfo, err := os.Stat("/usr/bin/uname")
-	if err != nil || fInfo.Mode()&0111 == 0 {
-		// TODO Log the error or insufficient permissions
+	if err != nil {
+		log.Errorf("Could not read /usr/bin/uname: %s", err)
+		return nil
+	}
+	if fInfo.Mode()&0111 == 0 {
+		log.Errorf("Could not read /usr/bin/uname: file not readable (%s)", fInfo.Mode())
 		return nil
 	}
 
 	output, err := getCommandOutput("/usr/bin/uname", "--kernel-name")
 	if err != nil {
-		// TODO Log the error
+		log.Errorf("Could not read /usr/bin/uname --kernel-name: %s", err)
 	} else {
 		c.data["uname.sysname"] = output
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--machine")
 	if err != nil {
-		// TODO Log the error
+		log.Errorf("Could not read /usr/bin/uname --machine: %s", err)
 	} else {
 		c.data["uname.machine"] = output
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--nodename")
 	if err != nil {
-		// TODO Log the error
+		log.Errorf("Could not read /usr/bin/uname --nodename: %s", err)
 	} else {
 		c.data["uname.nodename"] = output
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--kernel-release")
 	if err != nil {
-		// TODO Log the error
+		log.Errorf("Could not read /usr/bin/uname --kernel-release: %s", err)
 	} else {
 		c.data["uname.release"] = output
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--kernel-version")
 	if err != nil {
-		// TODO Log the error
+		log.Errorf("Could not read /usr/bin/uname --kernel-version: %s", err)
 	} else {
 		c.data["uname.version"] = output
 	}

@@ -1,6 +1,7 @@
 package collector
 
 import (
+	"git.sr.ht/~spc/go-log"
 	"regexp"
 )
 
@@ -37,6 +38,7 @@ func (c *MemoryCollector) collect() error {
 
 	lines, err := getFileOutput("/proc/meminfo")
 	if err != nil {
+		log.Errorf("Could not get output of /proc/meminfo: %s")
 		return err
 	}
 	for _, line := range lines {

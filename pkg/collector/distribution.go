@@ -2,6 +2,7 @@ package collector
 
 import (
 	"bufio"
+	"git.sr.ht/~spc/go-log"
 	"os"
 	"regexp"
 	"strings"
@@ -59,7 +60,7 @@ func (c *DistributionCollector) collect() error {
 func (c *DistributionCollector) collectOsRelease() error {
 	f, err := os.Open("/etc/os-release")
 	if err != nil {
-		// TODO Log the error
+		log.Errorf("Could not open /etc/os-release: %s", err)
 		return err
 	}
 	// remember to close the file at the end of the program
@@ -92,11 +93,12 @@ func (c *DistributionCollector) collectOsRelease() error {
 			// vers_mod_data: List[str] = re.split(r"(?<!\\):", data["CPE_NAME"])
 			// if len(vers_mod_data) >= 6:
 			//     version_modifier = vers_mod_data[5].lower().replace("\\:", ":")
+			log.Warn("CPE_NAME collection has not yet been implemented")
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		// TODO Log the error
+		log.Errorf("Could not parse /etc/os-release: %s", err)
 		return err
 	}
 	return nil

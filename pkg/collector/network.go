@@ -2,6 +2,7 @@ package collector
 
 import (
 	"fmt"
+	"git.sr.ht/~spc/go-log"
 	"net"
 	"net/netip"
 	"os"
@@ -54,24 +55,15 @@ func (c *NetworkCollector) GetData() (map[string]string, error) {
 
 // collect starts the actual fact collection. It is usually invoked by GetData.
 func (c *NetworkCollector) collect() error {
-	// Uncomment to collect network.hostname
-	/*err := c.collectHostname()
-	if err != nil {
-		// TODO Log the error
-	}*/
-	err := c.collectFQDN()
-	if err != nil {
-		// TODO Log the error
-	}
-	// Uncomment to collect network.ipv4_address and network.ipv6_address
-	/*err = c.collectAddresses()
-	if err != nil {
-		// TODO Log the error
-	}*/
+	_ = c.collectHostname()
+	_ = c.collectFQDN()
 
-	err = c.collectInterfaces()
+	// Uncomment to collect network.ipv4_address and network.ipv6_address
+	/*_ = c.collectAddresses()*/
+
+	err := c.collectInterfaces()
 	if err != nil {
-		// TODO Log the error
+		log.Errorf("Could not collect network interfaces: %s", err)
 	}
 
 	return nil
@@ -80,6 +72,7 @@ func (c *NetworkCollector) collect() error {
 func (c *NetworkCollector) collectHostname() error {
 	hostname, err := os.Hostname()
 	if err != nil {
+		log.Errorf("Could not collect hostname: %s", err)
 		return err
 	}
 	c.data["network.hostname"] = hostname
@@ -89,6 +82,7 @@ func (c *NetworkCollector) collectHostname() error {
 func (c *NetworkCollector) collectFQDN() error {
 	fullName, err := getCommandOutput("/usr/bin/hostname", "--fqdn,")
 	if err != nil {
+		log.Errorf("Could not collect fully qualified domain name: %s", err)
 		return err
 	}
 	c.data["network.fqdn"] = fullName
@@ -169,6 +163,7 @@ func (c *NetworkCollector) collectAddresses() error {
 
 // collectInterfaces gathers all 'net.' facts.
 func (c *NetworkCollector) collectInterfaces() error {
+	// TODO Rewrite this to be 'ip'-based
 	ifaces, _ := net.Interfaces()
 	for _, iface := range ifaces {
 		prefix := fmt.Sprintf("net.interface.%s", iface.Name)
