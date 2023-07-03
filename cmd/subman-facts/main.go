@@ -2,12 +2,24 @@ package main
 
 import (
 	"fmt"
+	"git.sr.ht/~spc/go-log"
 	"github.com/m-horky/subman-facts/pkg/collector"
 	"github.com/m-horky/subman-facts/pkg/project"
 	"sort"
 )
 
+func configureLogging() {
+	log.SetFlags(0)
+	level, err := log.ParseLevel("debug")
+	if err != nil {
+		level = log.LevelError
+	}
+	log.SetLevel(level)
+}
+
 func main() {
+	configureLogging()
+
 	fmt.Printf("subman-facts, version %s\n", project.Version)
 
 	collectors := []collector.Collector{
@@ -32,7 +44,15 @@ func main() {
 		}
 		sort.Strings(keys)
 		for _, k := range keys {
-			fmt.Printf("%s: %s\n", k, data[k])
+			fmt.Print(
+				fmt.Sprintf(
+					"%s%s%s: ",
+					"\u001B[36m", k, "\u001B[0m",
+				) + fmt.Sprintf(
+					"%s%s%s\n",
+					"\u001B[3m", data[k], "\u001B[0m",
+				),
+			)
 		}
 	}
 	for _, err := range errors {

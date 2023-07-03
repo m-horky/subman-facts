@@ -2,4 +2,4 @@ module github.com/m-horky/subman-facts
 
 go 1.19
 
-require github.com/Showmax/go-fqdn v1.0.0
+require git.sr.ht/~spc/go-log v0.0.0-20230531172318-1397be06f5f4
