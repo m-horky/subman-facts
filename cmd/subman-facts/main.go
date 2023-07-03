@@ -29,6 +29,7 @@ func main() {
 		&collector.DistributionCollector{},
 		&collector.UnameCollector{},
 		&collector.MemoryCollector{},
+		&collector.VirtCollector{},
 	}
 	var errors []error
 	for _, factCollector := range collectors {
