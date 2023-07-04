@@ -1,30 +1,28 @@
 package collector
 
+import "fmt"
+
+type DmidecodeFacts struct {
+	CollectedFacts `json:"-"`
+}
+
 type DmidecodeCollector struct {
-	data map[string]string
+	data      DmidecodeFacts
+	collected bool
 }
 
-func (c DmidecodeCollector) String() string {
-	return "Dmidecode collector"
-}
+func (c *DmidecodeCollector) GetData(rescan bool) (CollectedFacts, error) {
+	if rescan || !c.collected {
+		c.data = DmidecodeFacts{}
+	}
 
-// Flush ensures Collector has deleted previously collected data, if any.
-func (c DmidecodeCollector) Flush() {
-	c.data = nil
-}
-
-// GetData collects data from 'dmidecode' via shelling out to its binary.
-func (c DmidecodeCollector) GetData() (map[string]string, error) {
-	if c.data == nil {
-		err := c.collect()
-		if err != nil {
-			return nil, err
-		}
+	err := c.collect()
+	if err != nil {
+		return DmidecodeFacts{}, err
 	}
 	return c.data, nil
 }
 
-// collect starts the actual fact collection. It is usually invoked by GetData.
-func (c DmidecodeCollector) collect() error {
-	return nil
+func (c *DmidecodeCollector) collect() error {
+	return fmt.Errorf("Dmidecode collection is not implemented.")
 }
