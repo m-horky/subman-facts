@@ -9,7 +9,7 @@ import (
 )
 
 func configureLogging() {
-	log.SetFlags(0)
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	level, err := log.ParseLevel("debug")
 	if err != nil {
 		level = log.LevelError
