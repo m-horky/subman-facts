@@ -17,6 +17,7 @@ func CollectAll() (map[string]collector.CollectedFacts, []error) {
 		"kpatch":       &collector.KpatchCollector{},
 		"lscpu":        &collector.LscpuCollector{},
 		"memory":       &collector.MemoryCollector{},
+		"system":       &collector.SystemCollector{},
 		"uname":        &collector.UnameCollector{},
 		"uptime":       &collector.UptimeCollector{},
 		"virt":         &collector.VirtCollector{},

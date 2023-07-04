@@ -27,6 +27,6 @@ func main() {
 	fmt.Println(string(s))
 
 	for _, err := range errors {
-		fmt.Println(err)
+		log.Error(err)
 	}
 }
