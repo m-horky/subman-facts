@@ -5,30 +5,30 @@ import (
 	"os"
 )
 
+type UnameFacts struct {
+	CollectedFacts `json:"-"`
+	Sysname        string `json:"sysname"`
+	Machine        string `json:"machine"`
+	Nodename       string `json:"nodename"`
+	KernelRelease  string `json:"release"`
+	KernelVersion  string `json:"version"`
+}
+
 // UnameCollector contains facts from 'uname'
 type UnameCollector struct {
-	data map[string]string
+	data      UnameFacts
+	collected bool
 }
 
-func (c *UnameCollector) String() string {
-	return "uname collector"
-}
-
-// Flush ensures Collector has deleted previously collected data, if any.
-func (c *UnameCollector) Flush() {
-	c.data = make(map[string]string)
-}
-
-// GetData collects 'uname' data.
-func (c *UnameCollector) GetData() (map[string]string, error) {
-	if c.data == nil {
-		c.Flush()
+// GetData collects 'uname' data and returns them as UnameFacts.
+func (c *UnameCollector) GetData(rescan bool) (CollectedFacts, error) {
+	if rescan || !c.collected {
+		c.data = UnameFacts{}
 	}
-	if len(c.data) == 0 {
-		err := c.collect()
-		if err != nil {
-			return nil, err
-		}
+
+	err := c.collect()
+	if err != nil {
+		return nil, err
 	}
 	return c.data, nil
 }
@@ -49,35 +49,35 @@ func (c *UnameCollector) collect() error {
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --kernel-name: %s", err)
 	} else {
-		c.data["uname.sysname"] = output
+		c.data.Sysname = output
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--machine")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --machine: %s", err)
 	} else {
-		c.data["uname.machine"] = output
+		c.data.Machine = output
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--nodename")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --nodename: %s", err)
 	} else {
-		c.data["uname.nodename"] = output
+		c.data.Nodename = output
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--kernel-release")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --kernel-release: %s", err)
 	} else {
-		c.data["uname.release"] = output
+		c.data.KernelRelease = output
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--kernel-version")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --kernel-version: %s", err)
 	} else {
-		c.data["uname.version"] = output
+		c.data.KernelVersion = output
 	}
 
 	return nil

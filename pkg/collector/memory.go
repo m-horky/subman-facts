@@ -3,31 +3,29 @@ package collector
 import (
 	"git.sr.ht/~spc/go-log"
 	"regexp"
+	"strconv"
 )
 
+type MemoryFacts struct {
+	CollectedFacts `json:"-"`
+	MemTotal       int `json:"memtotal"`
+	SwapTotal      int `json:"swaptotal"`
+}
+
 type MemoryCollector struct {
-	data map[string]string
-}
-
-func (c *MemoryCollector) String() string {
-	return "memory collector"
-}
-
-// Flush ensures Collector has deleted previously collected data, if any.
-func (c *MemoryCollector) Flush() {
-	c.data = make(map[string]string)
+	data      MemoryFacts
+	collected bool
 }
 
 // GetData collects memory data.
-func (c *MemoryCollector) GetData() (map[string]string, error) {
-	if c.data == nil {
-		c.Flush()
+func (c *MemoryCollector) GetData(rescan bool) (CollectedFacts, error) {
+	if rescan || !c.collected {
+		c.data = MemoryFacts{}
 	}
-	if len(c.data) == 0 {
-		err := c.collect()
-		if err != nil {
-			return nil, err
-		}
+
+	err := c.collect()
+	if err != nil {
+		return nil, err
 	}
 	return c.data, nil
 }
@@ -46,15 +44,19 @@ func (c *MemoryCollector) collect() error {
 		if len(matches) < 3 {
 			continue
 		}
+
 		key := matches[1]
-		value := matches[2]
+		value, err := strconv.Atoi(matches[2])
+		if err != nil {
+			log.Errorf("Could not convert memory value: %s", line)
+		}
 
 		if key == "MemTotal" {
-			c.data["memory.memtotal"] = value
+			c.data.MemTotal = value
 		}
-		// if key == "SwapTotal" {
-		// 	c.data["memory.swaptotal"] = value
-		// }
+		if key == "SwapTotal" {
+			c.data.SwapTotal = value
+		}
 	}
 	return nil
 }

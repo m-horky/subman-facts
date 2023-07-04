@@ -8,30 +8,28 @@ import (
 	"strings"
 )
 
+type DistributionFacts struct {
+	CollectedFacts `json:"-"`
+	Name           string `json:"name"`
+	Version        string `json:"version"`
+	ID             string `json:"id"`
+}
+
 // DistributionCollector contains facts from /etc/os-release and /etc/redhat-release
 type DistributionCollector struct {
-	data map[string]string
-}
-
-func (c *DistributionCollector) String() string {
-	return "os-release collector"
-}
-
-// Flush ensures Collector has deleted previously collected data, if any.
-func (c *DistributionCollector) Flush() {
-	c.data = make(map[string]string)
+	data      DistributionFacts
+	collected bool
 }
 
 // GetData collects network interface data.
-func (c *DistributionCollector) GetData() (map[string]string, error) {
-	if c.data == nil {
-		c.Flush()
+func (c *DistributionCollector) GetData(rescan bool) (CollectedFacts, error) {
+	if rescan || !c.collected {
+		c.data = DistributionFacts{}
 	}
-	if len(c.data) == 0 {
-		err := c.collect()
-		if err != nil {
-			return nil, err
-		}
+
+	err := c.collect()
+	if err != nil {
+		return nil, err
 	}
 	return c.data, nil
 }
@@ -77,11 +75,11 @@ func (c *DistributionCollector) collectOsRelease() error {
 
 		// 'Red Hat Enterprise Linux', 'CentOS Stream', 'Fedora Linux'
 		if key == "NAME" {
-			c.data["distribution.name"] = value
+			c.data.Name = value
 		}
 		// '8', '9', '37'
 		if key == "VERSION_ID" {
-			c.data["distribution.version"] = value
+			c.data.Version = value
 		}
 		// '9.2 (Plow)', '8.8 (Ootpa)', '9' (CentOS), '37 (Workstation Edition)'
 		if key == "VERSION" {
@@ -113,7 +111,7 @@ func (c *DistributionCollector) collectDistributionId(value string) error {
 		value = matches[1]
 	}
 
-	c.data["distribution.id"] = value
+	c.data.ID = value
 	return nil
 }
 
