@@ -3,6 +3,7 @@ package collector
 import (
 	"fmt"
 	"git.sr.ht/~spc/go-log"
+	"os"
 	"strings"
 )
 
@@ -42,7 +43,6 @@ func (c *VirtCollector) collect() error {
 	if err != nil {
 		// If virt-what is not installed, do not do anything (RHBZ 768397)
 		c.data["virt.is_guest"] = "Unknown"
-		return nil
 	}
 
 	if c.data["virt.is_guest"] == "true" {
@@ -118,19 +118,67 @@ func (c *VirtCollector) collectUUID() error {
 	return fmt.Errorf("could not collect UUID from the system: %s", strings.Join(errors, ", "))
 }
 
+// collectUUIDWithDmidecode invokes the `dmidecode` binary and parses out the UUID value
 func (c *VirtCollector) collectUUIDWithDmidecode() error {
-	// TODO Run dmidecode collector again? Use simple regex to get out that one thing?
+	output, err := getCommandOutput("/usr/sbin/dmidecode")
+	if err != nil {
+		log.Errorf("Could not collect data from /usr/sbin/dmidecode: %s", err)
+		return err
+	}
+
+	for _, line := range strings.Split(output, "\n") {
+		if !strings.Contains(line, "UUID") {
+			continue
+		}
+		// The line has a format of '\tUUID: the-uuid-string'
+		uuid := strings.TrimLeft(line, "\tUUID: ")
+		c.data["virt.uuid"] = uuid
+		log.Debug("UUID value found using dmidecode.")
+	}
 	return nil
 }
 
 // collectUUIDFromDeviceTree collects the system UUID from device-tree platforms,
 // such as ppc64 and ppc64le.
 func (c *VirtCollector) collectUUIDFromDeviceTree() error {
+	for _, path := range []string{"/proc/device-tree/vm,uuid", "/proc/device-tree/ibm,partition-uuid"} {
+		_, err := os.Stat(path)
+		if os.IsNotExist(err) {
+			continue
+		}
+		output, err := getFileOutput(path)
+		if err != nil {
+			log.Errorf("UUID file %s exists, but could not be read: %s", path, err)
+			return err
+		}
+		if len(output) < 1 {
+			log.Errorf("UUID file %s does not contain readable UUID", path)
+			return fmt.Errorf("could not read UUID from %s", path)
+		}
+
+		// ppc54 can report UUID with null byte at the end (RHBZ 1405125).
+		uuid := strings.Trim(output[0], "\u0000")
+		c.data["virt.uuid"] = uuid
+		log.Debugf("UUID value found in %s.", path)
+	}
 	return nil
 }
 
 // collectUUIDFromSys collects the system UUID from a filesystem file
-// `/sys/hypervisor/uuid`.
+// `/sys/hypervisor/uuid` (used in Xen).
 func (c *VirtCollector) collectUUIDFromSys() error {
+	path := "/sys/hypervisor/uuid"
+	output, err := getFileOutput(path)
+	if os.IsNotExist(err) {
+		return nil
+	}
+	if len(output) < 1 {
+		log.Errorf("UUID file %s does not contain readable UUID", path)
+		return nil
+	}
+
+	uuid := strings.Trim(output[0], "\n\r")
+	c.data["virt.uuid"] = uuid
+	log.Debugf("UUID value found in %s.", path)
 	return nil
 }
