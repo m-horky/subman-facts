@@ -85,7 +85,7 @@ func (c *NetworkCollector) collectFQDN() error {
 		log.Errorf("Could not collect fully qualified domain name: %s", err)
 		return err
 	}
-	c.data["network.fqdn"] = fullName
+	c.data["network.fqdn"] = fullName[0]
 	return nil
 }
 

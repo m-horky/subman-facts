@@ -49,20 +49,17 @@ func CollectAll() (map[string]CollectedFacts, []error) {
 	return collectedFacts, errors
 }
 
-// FIXME Currently, the collectors have no way of specifying defaults for some
-//  key-value pair. When they do, they must do so at start of '.collect()'.
-
-// getCommandOutput invokes a shell program and returns the output.
-// It strips out the (last) newline.
-func getCommandOutput(cmd string, args ...string) (string, error) {
+// getCommandOutput invokes a shell program and returns the output as lines.
+func getCommandOutput(cmd string, args ...string) ([]string, error) {
 	rawOutput, err := exec.Command(cmd, args...).Output()
 	if err != nil {
-		return "", err
+		return []string{}, err
 	}
-	return strings.TrimRight(string(rawOutput), "\n"), nil
+	result := strings.Split(string(rawOutput), "\n")
+	return result, nil
 }
 
-// getFileOutput reads a file and returns a slice of lines in it
+// getFileOutput reads a file and returns the lines.
 func getFileOutput(path string) ([]string, error) {
 	rawOutput, err := os.ReadFile(path)
 	if err != nil {

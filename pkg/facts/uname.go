@@ -49,35 +49,35 @@ func (c *UnameCollector) collect() error {
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --kernel-name: %s", err)
 	} else {
-		c.data.Sysname = output
+		c.data.Sysname = output[0]
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--machine")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --machine: %s", err)
 	} else {
-		c.data.Machine = output
+		c.data.Machine = output[0]
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--nodename")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --nodename: %s", err)
 	} else {
-		c.data.Nodename = output
+		c.data.Nodename = output[0]
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--kernel-release")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --kernel-release: %s", err)
 	} else {
-		c.data.KernelRelease = output
+		c.data.KernelRelease = output[0]
 	}
 
 	output, err = getCommandOutput("/usr/bin/uname", "--kernel-version")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --kernel-version: %s", err)
 	} else {
-		c.data.KernelVersion = output
+		c.data.KernelVersion = output[0]
 	}
 
 	return nil

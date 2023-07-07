@@ -55,19 +55,19 @@ func (c *VirtCollector) collectVirtWhat() error {
 	}
 
 	// Force into a single line, as xen can report xen and xen-hvm (RHBZ 1018807)
-	output = strings.Join(strings.Split(output, "\n"), ", ")
+	hosts := strings.Join(output, ", ")
 
-	if len(output) == 0 {
+	if len(hosts) == 0 {
 		c.data.IsGuest = false
 		c.data.HostType = "Not Applicable"
 		return nil
 	}
 
 	c.data.IsGuest = true
-	c.data.HostType = output
+	c.data.HostType = hosts
 
 	// xen dom0 is a guest for virt-what's purposes, but a host for our purposes (RHBZ 757697)
-	if output == "dom0" {
+	if strings.Contains(hosts, "dom0") {
 		c.data.IsGuest = false
 	}
 
@@ -121,7 +121,7 @@ func (c *VirtCollector) collectUUIDWithDmidecode() error {
 		return err
 	}
 
-	for _, line := range strings.Split(output, "\n") {
+	for _, line := range output {
 		if !strings.Contains(line, "UUID") {
 			continue
 		}
