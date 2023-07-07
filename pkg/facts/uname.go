@@ -1,4 +1,4 @@
-package collector
+package facts
 
 import (
 	"git.sr.ht/~spc/go-log"

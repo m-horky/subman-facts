@@ -1,4 +1,4 @@
-package collector
+package facts
 
 import (
 	"fmt"
@@ -31,7 +31,7 @@ type NetworkCollector struct {
 }
 
 func (c *NetworkCollector) String() string {
-	return "Network collector"
+	return "Network facts"
 }
 
 // Flush ensures Collector has deleted previously collected data, if any.
