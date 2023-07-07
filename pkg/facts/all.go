@@ -24,11 +24,12 @@ type AllFacts struct {
 	VirtFacts         VirtFacts         `json:"virt"`
 }
 
-func CollectAll() (AllFacts, []error) {
+func CollectAll() AllFacts {
 	everything := AllFacts{}
-	var errors []error
 
-	// TODO Capture the errors _somehow_
+	// TODO Capture the errors _somehow_?
+	//  They are currently ignored; collection issues should already be logged,
+	//  so the fact that the collection failed is already known to the user.
 	everything.AWSFacts, _ = (&AWSCollector{}).GetData(true)
 	everything.AzureFacts, _ = (&AzureCollector{}).GetData(true)
 	everything.GCPFacts, _ = (&GCPCollector{}).GetData(true)
@@ -44,7 +45,7 @@ func CollectAll() (AllFacts, []error) {
 	everything.UptimeFacts, _ = (&UptimeCollector{}).GetData(true)
 	everything.VirtFacts, _ = (&VirtCollector{}).GetData(true)
 
-	return everything, errors
+	return everything
 }
 
 // getCommandOutput invokes a shell program and returns the output as lines.

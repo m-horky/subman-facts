@@ -48,6 +48,7 @@ func (c *MemoryCollector) collect() error {
 		value, err := strconv.Atoi(matches[2])
 		if err != nil {
 			log.Errorf("Could not convert memory value: %s", line)
+			continue
 		}
 
 		if key == "MemTotal" {

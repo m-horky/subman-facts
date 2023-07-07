@@ -24,11 +24,7 @@ func main() {
 
 	_, _ = fmt.Fprintf(os.Stderr, "subman-facts, version %s\n", Version)
 
-	collectedFacts, errors := facts.CollectAll()
+	collectedFacts := facts.CollectAll()
 	s, _ := json.MarshalIndent(collectedFacts, "", "\t")
 	fmt.Println(string(s))
-
-	for _, err := range errors {
-		log.Error(err)
-	}
 }

@@ -1,6 +1,8 @@
 package facts
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type AWSFacts struct {
 	InstanceID              string `json:"instance_id"`
