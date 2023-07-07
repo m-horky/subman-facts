@@ -3,7 +3,6 @@ package facts
 import "fmt"
 
 type DmidecodeFacts struct {
-	CollectedFacts `json:"-"`
 }
 
 type DmidecodeCollector struct {
@@ -11,7 +10,7 @@ type DmidecodeCollector struct {
 	collected bool
 }
 
-func (c *DmidecodeCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *DmidecodeCollector) GetData(rescan bool) (DmidecodeFacts, error) {
 	if rescan || !c.collected {
 		c.data = DmidecodeFacts{}
 	}

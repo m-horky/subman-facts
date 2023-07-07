@@ -3,7 +3,6 @@ package facts
 import "fmt"
 
 type CustomFacts struct {
-	CollectedFacts `json:"-"`
 }
 
 type CustomCollector struct {
@@ -11,7 +10,7 @@ type CustomCollector struct {
 	collected bool
 }
 
-func (c *CustomCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *CustomCollector) GetData(rescan bool) (CustomFacts, error) {
 	if rescan || !c.collected {
 		c.data = CustomFacts{}
 	}

@@ -3,7 +3,6 @@ package facts
 import "fmt"
 
 type UptimeFacts struct {
-	CollectedFacts `json:"-"`
 }
 
 type UptimeCollector struct {
@@ -11,7 +10,7 @@ type UptimeCollector struct {
 	collected bool
 }
 
-func (c *UptimeCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *UptimeCollector) GetData(rescan bool) (UptimeFacts, error) {
 	if rescan || !c.collected {
 		c.data = UptimeFacts{}
 	}

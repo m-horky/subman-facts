@@ -3,7 +3,6 @@ package facts
 import "fmt"
 
 type LscpuFacts struct {
-	CollectedFacts `json:"-"`
 }
 
 type LscpuCollector struct {
@@ -11,7 +10,7 @@ type LscpuCollector struct {
 	collected bool
 }
 
-func (c *LscpuCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *LscpuCollector) GetData(rescan bool) (LscpuFacts, error) {
 	if rescan || !c.collected {
 		c.data = LscpuFacts{}
 	}

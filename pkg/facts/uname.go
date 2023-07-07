@@ -6,12 +6,11 @@ import (
 )
 
 type UnameFacts struct {
-	CollectedFacts `json:"-"`
-	Sysname        string `json:"sysname"`
-	Machine        string `json:"machine"`
-	Nodename       string `json:"nodename"`
-	KernelRelease  string `json:"release"`
-	KernelVersion  string `json:"version"`
+	Sysname       string `json:"sysname"`
+	Machine       string `json:"machine"`
+	Nodename      string `json:"nodename"`
+	KernelRelease string `json:"release"`
+	KernelVersion string `json:"version"`
 }
 
 // UnameCollector contains facts from 'uname'
@@ -21,14 +20,14 @@ type UnameCollector struct {
 }
 
 // GetData collects 'uname' data and returns them as UnameFacts.
-func (c *UnameCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *UnameCollector) GetData(rescan bool) (UnameFacts, error) {
 	if rescan || !c.collected {
 		c.data = UnameFacts{}
 	}
 
 	err := c.collect()
 	if err != nil {
-		return nil, err
+		return UnameFacts{}, err
 	}
 	return c.data, nil
 }

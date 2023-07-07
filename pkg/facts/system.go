@@ -3,7 +3,6 @@ package facts
 import "git.sr.ht/~spc/go-log"
 
 type SystemFacts struct {
-	CollectedFacts     `json:"-"`
 	CertificateVersion string `json:"certificate_version"`
 	DefaultLocale      string `json:"default_locale"`
 }
@@ -15,14 +14,14 @@ type SystemCollector struct {
 }
 
 // GetData collects certificate and locale data and returns them as SystemFacts.
-func (c *SystemCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *SystemCollector) GetData(rescan bool) (SystemFacts, error) {
 	if rescan || !c.collected {
 		c.data = SystemFacts{}
 	}
 
 	err := c.collect()
 	if err != nil {
-		return nil, err
+		return SystemFacts{}, err
 	}
 	return c.data, nil
 }

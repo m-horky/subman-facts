@@ -3,7 +3,6 @@ package facts
 import "fmt"
 
 type AzureFacts struct {
-	CollectedFacts `json:"-"`
 }
 
 type AzureCollector struct {
@@ -11,7 +10,7 @@ type AzureCollector struct {
 	collected bool
 }
 
-func (c *AzureCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *AzureCollector) GetData(rescan bool) (AzureFacts, error) {
 	if rescan || !c.collected {
 		c.data = AzureFacts{}
 	}

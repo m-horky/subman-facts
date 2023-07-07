@@ -8,10 +8,9 @@ import (
 )
 
 type VirtFacts struct {
-	CollectedFacts `json:"-"`
-	IsGuest        bool   `json:"is_guest"`
-	HostType       string `json:"host_type"`
-	UUID           string `json:"uuid,omitempty"`
+	IsGuest  bool   `json:"is_guest"`
+	HostType string `json:"host_type"`
+	UUID     string `json:"uuid,omitempty"`
 }
 
 type VirtCollector struct {
@@ -20,7 +19,7 @@ type VirtCollector struct {
 }
 
 // GetData collects virtualization data and returns them as VirtFacts.
-func (c *VirtCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *VirtCollector) GetData(rescan bool) (VirtFacts, error) {
 	if rescan || !c.collected {
 		c.data = VirtFacts{}
 	}

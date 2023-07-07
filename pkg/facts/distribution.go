@@ -9,10 +9,9 @@ import (
 )
 
 type DistributionFacts struct {
-	CollectedFacts `json:"-"`
-	Name           string `json:"name"`
-	Version        string `json:"version"`
-	ID             string `json:"id"`
+	Name    string `json:"name"`
+	Version string `json:"version"`
+	ID      string `json:"id"`
 }
 
 // DistributionCollector contains facts from /etc/os-release and /etc/redhat-release
@@ -22,14 +21,14 @@ type DistributionCollector struct {
 }
 
 // GetData collects network interface data.
-func (c *DistributionCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *DistributionCollector) GetData(rescan bool) (DistributionFacts, error) {
 	if rescan || !c.collected {
 		c.data = DistributionFacts{}
 	}
 
 	err := c.collect()
 	if err != nil {
-		return nil, err
+		return DistributionFacts{}, err
 	}
 	return c.data, nil
 }

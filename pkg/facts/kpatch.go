@@ -3,7 +3,6 @@ package facts
 import "fmt"
 
 type KpatchFacts struct {
-	CollectedFacts `json:"-"`
 }
 
 type KpatchCollector struct {
@@ -11,7 +10,7 @@ type KpatchCollector struct {
 	collected bool
 }
 
-func (c *KpatchCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *KpatchCollector) GetData(rescan bool) (KpatchFacts, error) {
 	if rescan || !c.collected {
 		c.data = KpatchFacts{}
 	}

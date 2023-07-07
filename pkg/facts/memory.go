@@ -7,9 +7,8 @@ import (
 )
 
 type MemoryFacts struct {
-	CollectedFacts `json:"-"`
-	MemTotal       int `json:"memtotal"`
-	SwapTotal      int `json:"swaptotal"`
+	MemTotal  int `json:"memtotal"`
+	SwapTotal int `json:"swaptotal"`
 }
 
 type MemoryCollector struct {
@@ -18,14 +17,14 @@ type MemoryCollector struct {
 }
 
 // GetData collects memory data.
-func (c *MemoryCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *MemoryCollector) GetData(rescan bool) (MemoryFacts, error) {
 	if rescan || !c.collected {
 		c.data = MemoryFacts{}
 	}
 
 	err := c.collect()
 	if err != nil {
-		return nil, err
+		return MemoryFacts{}, err
 	}
 	return c.data, nil
 }

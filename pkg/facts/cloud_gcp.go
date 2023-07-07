@@ -3,7 +3,6 @@ package facts
 import "fmt"
 
 type GCPFacts struct {
-	CollectedFacts `json:"-"`
 }
 
 type GCPCollector struct {
@@ -11,7 +10,7 @@ type GCPCollector struct {
 	collected bool
 }
 
-func (c *GCPCollector) GetData(rescan bool) (CollectedFacts, error) {
+func (c *GCPCollector) GetData(rescan bool) (GCPFacts, error) {
 	if rescan || !c.collected {
 		c.data = GCPFacts{}
 	}
