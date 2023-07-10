@@ -58,5 +58,6 @@ func (c *MemoryCollector) collect() error {
 			c.data.SwapTotal = value
 		}
 	}
+	c.collected = true
 	return nil
 }

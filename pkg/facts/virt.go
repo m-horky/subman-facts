@@ -42,6 +42,7 @@ func (c *VirtCollector) collect() error {
 	if c.data.IsGuest == true {
 		_ = c.collectUUID()
 	}
+	c.collected = true
 	return nil
 }
 

@@ -30,6 +30,7 @@ func (c *SystemCollector) GetData(rescan bool) (SystemFacts, error) {
 func (c *SystemCollector) collect() error {
 	_ = c.collectCertificateVersion()
 	_ = c.collectDefaultLocale()
+	c.collected = true
 	return nil
 }
 

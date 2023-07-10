@@ -39,6 +39,7 @@ func (c *DistributionCollector) collect() error {
 	if err == nil {
 		err = c.collectOsRelease()
 		if err == nil {
+			c.collected = true
 			return nil
 		}
 	}
@@ -47,6 +48,7 @@ func (c *DistributionCollector) collect() error {
 	if err == nil {
 		err = c.collectRedhatRelease()
 		if err == nil {
+			c.collected = true
 			return nil
 		}
 	}

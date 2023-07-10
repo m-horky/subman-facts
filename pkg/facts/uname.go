@@ -79,5 +79,6 @@ func (c *UnameCollector) collect() error {
 		c.data.KernelVersion = output[0]
 	}
 
+	c.collected = true
 	return nil
 }
