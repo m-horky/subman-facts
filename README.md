@@ -1,16 +1,14 @@
 # subscription-manager like fact collection
 
+This repository contains fact collectors written in Go, with focus to 1:1 map to facts collected by `subscription-manager`.
+
 <!-- 
 The facts are tracked in our internal document:
 https://docs.google.com/spreadsheets/d/1Y2TTLz_1sWKm6uLO4h9-Dl0z3qhZ7QFxnoKcNePnuks/edit
+
+The table below only lists the current requirements.
+What the future will require of us no one knows; if each service built their own rhc worker, our tooling could focus on other stuff.
 -->
-
-However, we don't know if they would still be needed for SCA mode rhc.next will operate in.
-
-We plan on asking about:
-
-- whether they will be required for SCA,
-- in which types of connectivity they are required (CDN cert for downloading content, insights, ...).
 
 
 ## Running
