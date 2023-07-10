@@ -40,6 +40,7 @@ func CollectAll() AllFacts {
 	everything.InsightsFacts, _ = (&InsightsCollector{}).GetData(true)
 	everything.KpatchFacts, _ = (&KpatchCollector{}).GetData(true)
 	everything.MemoryFacts, _ = (&MemoryCollector{}).GetData(true)
+	everything.NetworkFacts, _ = (&NetworkCollector{}).GetData(true)
 	everything.SystemFacts, _ = (&SystemCollector{}).GetData(true)
 	everything.UnameFacts, _ = (&UnameCollector{}).GetData(true)
 	everything.UptimeFacts, _ = (&UptimeCollector{}).GetData(true)
