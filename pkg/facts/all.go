@@ -9,9 +9,6 @@ import (
 )
 
 type AllFacts struct {
-	AWSFacts          AWSFacts          `json:"aws"`
-	AzureFacts        AzureFacts        `json:"azure"`
-	GCPFacts          GCPFacts          `json:"gcp"`
 	CustomFacts       CustomFacts       `json:"custom"`
 	DistributionFacts DistributionFacts `json:"distribution"`
 	DmidecodeFacts    DmidecodeFacts    `json:"dmidecode"`
@@ -23,17 +20,14 @@ type AllFacts struct {
 	UnameFacts        UnameFacts        `json:"uname"`
 	UptimeFacts       UptimeFacts       `json:"uptime"`
 	VirtFacts         VirtFacts         `json:"virt"`
+	AWSFacts          *AWSFacts         `json:"aws,omitempty"`
+	AzureFacts        *AzureFacts       `json:"azure,omitempty"`
+	GCPFacts          *GCPFacts         `json:"gcp,omitempty"`
 }
 
 func CollectAll() AllFacts {
 	everything := AllFacts{}
 
-	// TODO Capture the errors _somehow_?
-	//  They are currently ignored; collection issues should already be logged,
-	//  so the fact that the collection failed is already known to the user.
-	everything.AWSFacts, _ = (&AWSCollector{}).GetData(true)
-	everything.AzureFacts, _ = (&AzureCollector{}).GetData(true)
-	everything.GCPFacts, _ = (&GCPCollector{}).GetData(true)
 	everything.CustomFacts, _ = (&CustomCollector{}).GetData(true)
 	everything.DistributionFacts, _ = (&DistributionCollector{}).GetData(true)
 	everything.DmidecodeFacts, _ = (&DmidecodeCollector{}).GetData(true)
@@ -45,6 +39,19 @@ func CollectAll() AllFacts {
 	everything.UnameFacts, _ = (&UnameCollector{}).GetData(true)
 	everything.UptimeFacts, _ = (&UptimeCollector{}).GetData(true)
 	everything.VirtFacts, _ = (&VirtCollector{}).GetData(true)
+
+	awsFacts, err := (&AWSCollector{}).GetData(true)
+	if err == nil {
+		*everything.AWSFacts = awsFacts
+	}
+	azureFacts, err := (&AzureCollector{}).GetData(true)
+	if err == nil {
+		*everything.AzureFacts = azureFacts
+	}
+	gcpFacts, err := (&GCPCollector{}).GetData(true)
+	if err == nil {
+		*everything.GCPFacts = gcpFacts
+	}
 
 	return everything
 }
