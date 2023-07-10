@@ -28,8 +28,8 @@ $ make run
 
 ## The table
 
-| fact                                            | required by              | implemented             |
-|-------------------------------------------------|--------------------------|-------------------------|
+| fact                                            | required by              | implemented       |
+|-------------------------------------------------|--------------------------|-------------------|
 | aws\_account\_id                                | swatch                   |
 | aws\_billing\_products                          | swatch                   |
 | aws\_instance\_id                               | swatch                   |
@@ -43,9 +43,9 @@ $ make run
 | cpu.cpu\_socket(s)                              | candlepin, swatch (HBI)  |
 | cpu.thread(s)\_per\_core                        |                          |
 | cpu.topology\_source                            |                          |
-| distribution.id                                 | candlepin+               | `distribution.go`       |
-| distribution.name                               | candlepin+, swatch (HBI) | `distribution.go`       |
-| distribution.version                            | candlepin+, swatch (HBI) | `distribution.go`       |
+| distribution.id                                 | candlepin+               | `distribution.go` |
+| distribution.name                               | candlepin+, swatch (HBI) | `distribution.go` |
+| distribution.version                            | candlepin+, swatch (HBI) | `distribution.go` |
 | distribution.version.modifier                   |                          |
 | dmi.baseboard.chassis\_handle                   |                          |
 | dmi.baseboard.contained\_object\_handles        |                          |
@@ -191,31 +191,31 @@ $ make run
 | lscpu.vulnerability\_spectre\_v2                |                          |
 | lscpu.vulnerability\_srbds                      |                          |
 | lscpu.vulnerability\_tsx\_async\_abort          |                          |
-| memory.memtotal                                 | candlepin, swatch (HBI)  | `memory.go`             |
-| memory.swaptotal                                |                          | `memory.go` (disabled)  |
-| net.interface.$IFACE.ipv4\_address              | swatch (HBI)             | `network.go`            |
-| net.interface.$IFACE.ipv4\_address\_list        | swatch (HBI)             | `network.go`            |
-| net.interface.$IFACE.ipv4\_broadcast            |                          |                         |
-| net.interface.$IFACE.ipv4\_broadcast\_list      |                          |                         |
-| net.interface.$IFACE.ipv4\_netmask              |                          | `network.go` (disabled) |
-| net.interface.$IFACE.ipv4\_netmask\_list        |                          | `network.go` (disabled) |
-| net.interface.$IFACE.ipv6\_address.global       | swatch (HBI)             | `network.go`            |
-| net.interface.$IFACE.ipv6\_address.global\_list | swatch (HBI)             | `network.go`            |
-| net.interface.$IFACE.ipv6\_address.host         |                          | `network.go` (disabled) |
-| net.interface.$IFACE.ipv6\_address.host\_list   |                          | `network.go` (disabled) |
-| net.interface.$IFACE.ipv6\_address.link         | swatch (HBI)             | `network.go`            |
-| net.interface.$IFACE.ipv6\_address.link\_list   | swatch (HBI)             | `network.go`            |
-| net.interface.$IFACE.ipv6\_netmask.global       |                          | `network.go` (disabled) |
-| net.interface.$IFACE.ipv6\_netmask.global\_list |                          | `network.go` (disabled) |
-| net.interface.$IFACE.ipv6\_netmask.host         |                          | `network.go` (disabled) |
-| net.interface.$IFACE.ipv6\_netmask.host\_list   |                          | `network.go` (disabled) |
-| net.interface.$IFACE.ipv6\_netmask.link         |                          | `network.go` (disabled) |
-| net.interface.$IFACE.ipv6\_netmask.link\_list   |                          | `network.go` (disabled) |
-| net.interface.$IFACE.mac\_address               | swatch                   | `network.go`            |
-| network.fqdn                                    | swatch (HBI)             | `network.go`            |
-| network.hostname                                | candlepin+               | `network.go` (disabled) |
-| network.ipv4\_address                           |                          | `network.go` (disabled) |
-| network.ipv6\_address                           |                          | `network.go` (disabled) |
+| memory.memtotal                                 | candlepin, swatch (HBI)  | `memory.go`       |
+| memory.swaptotal                                |                          | `memory.go`       |
+| net.interface.$IFACE.ipv4\_address              | swatch (HBI)             | `network.go`      |
+| net.interface.$IFACE.ipv4\_address\_list        | swatch (HBI)             | `network.go`      |
+| net.interface.$IFACE.ipv4\_broadcast            |                          |                   |
+| net.interface.$IFACE.ipv4\_broadcast\_list      |                          |                   |
+| net.interface.$IFACE.ipv4\_netmask              |                          |                   |
+| net.interface.$IFACE.ipv4\_netmask\_list        |                          |                   |
+| net.interface.$IFACE.ipv6\_address.global       | swatch (HBI)             | `network.go`      |
+| net.interface.$IFACE.ipv6\_address.global\_list | swatch (HBI)             | `network.go`      |
+| net.interface.$IFACE.ipv6\_address.host         |                          |                   |
+| net.interface.$IFACE.ipv6\_address.host\_list   |                          |                   |
+| net.interface.$IFACE.ipv6\_address.link         | swatch (HBI)             | `network.go`      |
+| net.interface.$IFACE.ipv6\_address.link\_list   | swatch (HBI)             | `network.go`      |
+| net.interface.$IFACE.ipv6\_netmask.global       |                          |                   |
+| net.interface.$IFACE.ipv6\_netmask.global\_list |                          |                   |
+| net.interface.$IFACE.ipv6\_netmask.host         |                          |                   |
+| net.interface.$IFACE.ipv6\_netmask.host\_list   |                          |                   |
+| net.interface.$IFACE.ipv6\_netmask.link         |                          |                   |
+| net.interface.$IFACE.ipv6\_netmask.link\_list   |                          |                   |
+| net.interface.$IFACE.mac\_address               | swatch                   | `network.go`      |
+| network.fqdn                                    | swatch (HBI)             | `network.go`      |
+| network.hostname                                | candlepin+               | `network.go`      |
+| network.ipv4\_address                           |                          |                   |
+| network.ipv6\_address                           |                          |                   |
 | proc\_cpuinfo.common.address\_sizes             |                          |
 | proc\_cpuinfo.common.bogomips                   |                          |
 | proc\_cpuinfo.common.bugs                       |                          |
@@ -239,13 +239,13 @@ $ make run
 | proc\_cpuinfo.common.vmx\_flags                 |                          |
 | proc\_cpuinfo.common.wp                         |                          |
 | proc\_stat.btime                                |                          |
-| system.certificate\_version                     | candlepin+               |
+| system.certificate\_version                     | candlepin+               | `system.go`       |
 | system.default\_locale                          |                          |
-| uname.machine                                   | swatch (HBI)             | `uname.go`              |
-| uname.nodename                                  | candlepin+               | `uname.go`              |
-| uname.release                                   | candlepin+               | `uname.go`              |
-| uname.sysname                                   | candlepin+               | `uname.go`              |
-| uname.version                                   |                          | `uname.go`              |
-| virt.host\_type                                 |                          |
-| virt.is\_guest                                  | swatch (HBI)             |
-| virt.uuid                                       | candlepin, swatch        |
+| uname.machine                                   | swatch (HBI)             | `uname.go`        |
+| uname.nodename                                  | candlepin+               | `uname.go`        |
+| uname.release                                   | candlepin+               | `uname.go`        |
+| uname.sysname                                   | candlepin+               | `uname.go`        |
+| uname.version                                   |                          | `uname.go`        |
+| virt.host\_type                                 |                          | `virt.go`         |
+| virt.is\_guest                                  | swatch (HBI)             | `virt.go`         |
+| virt.uuid                                       | candlepin, swatch        | `virt.go`         |

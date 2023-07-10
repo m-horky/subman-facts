@@ -4,7 +4,7 @@ import "git.sr.ht/~spc/go-log"
 
 type SystemFacts struct {
 	CertificateVersion string `json:"certificate_version"`
-	DefaultLocale      string `json:"default_locale"`
+	DefaultLocale      string `json:"default_locale,omitempty"`
 }
 
 // SystemCollector contains facts from 'System'
