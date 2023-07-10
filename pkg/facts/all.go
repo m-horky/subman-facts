@@ -15,7 +15,6 @@ type AllFacts struct {
 	DmidecodeFacts    DmidecodeFacts    `json:"dmidecode"`
 	InsightsFacts     InsightsFacts     `json:"insights"`
 	KpatchFacts       KpatchFacts       `json:"kpatch"`
-	LscpuFacts        LscpuFacts        `json:"lscpu"`
 	MemoryFacts       MemoryFacts       `json:"memory"`
 	NetworkFacts      NetworkFacts      `json:"network"`
 	SystemFacts       SystemFacts       `json:"system"`
@@ -38,7 +37,6 @@ func CollectAll() AllFacts {
 	everything.DmidecodeFacts, _ = (&DmidecodeCollector{}).GetData(true)
 	everything.InsightsFacts, _ = (&InsightsCollector{}).GetData(true)
 	everything.KpatchFacts, _ = (&KpatchCollector{}).GetData(true)
-	everything.LscpuFacts, _ = (&LscpuCollector{}).GetData(true)
 	everything.MemoryFacts, _ = (&MemoryCollector{}).GetData(true)
 	everything.SystemFacts, _ = (&SystemCollector{}).GetData(true)
 	everything.UnameFacts, _ = (&UnameCollector{}).GetData(true)
