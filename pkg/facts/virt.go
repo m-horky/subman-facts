@@ -48,7 +48,7 @@ func (c *VirtCollector) collect() error {
 
 // collectVirtWhat collects virtualization using /usr/sbin/virt-what.
 func (c *VirtCollector) collectVirtWhat() error {
-	output, err := getCommandOutput("/usr/sbin/virt-what")
+	output, _, err := getCommandOutput("/usr/sbin/virt-what")
 	if err != nil {
 		log.Errorf("Could not collect data from /usr/sbin/virt-what: %s", err)
 		return err
@@ -115,9 +115,9 @@ func (c *VirtCollector) collectUUID() error {
 
 // collectUUIDWithDmidecode invokes the `dmidecode` binary and parses out the UUID value
 func (c *VirtCollector) collectUUIDWithDmidecode() error {
-	output, err := getCommandOutput("/usr/sbin/dmidecode")
+	output, _, err := getCommandOutput("/usr/sbin/dmidecode")
 	if err != nil {
-		log.Errorf("Could not collect data from /usr/sbin/dmidecode: %s", err)
+		log.Errorf("Could not collect dmidecode data: %s", err)
 		return err
 	}
 

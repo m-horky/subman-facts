@@ -44,39 +44,39 @@ func (c *UnameCollector) collect() error {
 		return nil
 	}
 
-	output, err := getCommandOutput("/usr/bin/uname", "--kernel-name")
+	stdout, _, err := getCommandOutput("/usr/bin/uname", "--kernel-name")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --kernel-name: %s", err)
 	} else {
-		c.data.Sysname = output[0]
+		c.data.Sysname = stdout[0]
 	}
 
-	output, err = getCommandOutput("/usr/bin/uname", "--machine")
+	stdout, _, err = getCommandOutput("/usr/bin/uname", "--machine")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --machine: %s", err)
 	} else {
-		c.data.Machine = output[0]
+		c.data.Machine = stdout[0]
 	}
 
-	output, err = getCommandOutput("/usr/bin/uname", "--nodename")
+	stdout, _, err = getCommandOutput("/usr/bin/uname", "--nodename")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --nodename: %s", err)
 	} else {
-		c.data.Nodename = output[0]
+		c.data.Nodename = stdout[0]
 	}
 
-	output, err = getCommandOutput("/usr/bin/uname", "--kernel-release")
+	stdout, _, err = getCommandOutput("/usr/bin/uname", "--kernel-release")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --kernel-release: %s", err)
 	} else {
-		c.data.KernelRelease = output[0]
+		c.data.KernelRelease = stdout[0]
 	}
 
-	output, err = getCommandOutput("/usr/bin/uname", "--kernel-version")
+	stdout, _, err = getCommandOutput("/usr/bin/uname", "--kernel-version")
 	if err != nil {
 		log.Errorf("Could not read /usr/bin/uname --kernel-version: %s", err)
 	} else {
-		c.data.KernelVersion = output[0]
+		c.data.KernelVersion = stdout[0]
 	}
 
 	c.collected = true
