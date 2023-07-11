@@ -32,114 +32,114 @@ $ make run
 | azure\_offer                                    | yes      |
 | band.storage.usage                              | yes      | 3rd party (?)     |
 | cpu.core(s)\_per\_socket                        | yes      |
-| cpu.cpu(s)                                      | yes      |
+| cpu.cpu(s)                                      |          |
 | cpu.cpu\_socket(s)                              | yes      |
 | cpu.thread(s)\_per\_core                        |          |
 | cpu.topology\_source                            |          |
 | dev_sku                                         | yes      | 3rd party (?)     |
-| distribution.id                                 | yes      | `distribution.go` |
+| distribution.id                                 |          | `distribution.go` |
 | distribution.name                               | yes      | `distribution.go` |
 | distribution.version                            | yes      | `distribution.go` |
 | distribution.version.modifier                   |          |
 | distributor_version                             | yes      | 3rd party (?)     |
 | dmi.baseboard.chassis\_handle                   |          |
 | dmi.baseboard.contained\_object\_handles        |          |
-| dmi.baseboard.manufacturer                      |          |
+| dmi.baseboard.manufacturer                      | yes      |
 | dmi.baseboard.product\_name                     |          |
 | dmi.baseboard.serial\_number                    |          |
 | dmi.baseboard.type                              |          |
-| dmi.baseboard.version                           |          |
-| dmi.bios.address                                |          | `bios.go`         |
-| dmi.bios.bios\_revision                         |          | `bios.go`         |
-| dmi.bios.currently\_installed\_language         |          | `bios.go`         |
-| dmi.bios.firmware\_revision                     |          | `bios.go`         |
+| dmi.baseboard.version                           | yes      |
+| dmi.bios.address                                |          | `dmidecode.go`    |
+| dmi.bios.bios\_revision                         |          | `dmidecode.go`    |
+| dmi.bios.currently\_installed\_language         |          | `dmidecode.go`    |
+| dmi.bios.firmware\_revision                     |          | `dmidecode.go`    |
 | dmi.bios.installable\_languages                 |          |
-| dmi.bios.language\_description\_format          |          | `bios.go`         |
-| dmi.bios.release\_date                          |          | `bios.go`         |
-| dmi.bios.rom\_size                              |          | `bios.go`         |
-| dmi.bios.runtime\_size                          |          | `bios.go`         |
-| dmi.bios.vendor                                 | yes      | `bios.go`         |
-| dmi.bios.version                                | yes      | `bios.go`         |
-| dmi.chassis.asset\_tag                          | yes      |
-| dmi.chassis.contained\_elements                 |          |
-| dmi.chassis.lock                                |          |
-| dmi.chassis.manufacturer                        | yes      |
-| dmi.chassis.oem\_information                    |          |
-| dmi.chassis.serial\_number                      |          |
-| dmi.chassis.type                                |          |
-| dmi.chassis.version                             |          |
+| dmi.bios.language\_description\_format          |          | `dmidecode.go`    |
+| dmi.bios.release\_date                          |          | `dmidecode.go`    |
+| dmi.bios.rom\_size                              |          | `dmidecode.go`    |
+| dmi.bios.runtime\_size                          |          | `dmidecode.go`    |
+| dmi.bios.vendor                                 | yes      | `dmidecode.go`    |
+| dmi.bios.version                                | yes      | `dmidecode.go`    |
+| dmi.chassis.asset\_tag                          | yes      | `dmidecode.go`    |
+| dmi.chassis.contained\_elements                 |          | `dmidecode.go`    |
+| dmi.chassis.lock                                |          | `dmidecode.go`    |
+| dmi.chassis.manufacturer                        | yes      | `dmidecode.go`    |
+| dmi.chassis.oem\_information                    |          | `dmidecode.go`    |
+| dmi.chassis.serial\_number                      | yes      | `dmidecode.go`    |
+| dmi.chassis.type                                |          | `dmidecode.go`    |
+| dmi.chassis.version                             | yes      | `dmidecode.go`    |
 | dmi.connector.external\_connector\_type         |          |
 | dmi.connector.external\_reference\_designator   |          |
 | dmi.connector.internal\_connector\_type         |          |
 | dmi.connector.port\_type                        |          |
-| dmi.memory.array\_handle                        |          |
-| dmi.memory.asset\_tag                           |          |
-| dmi.memory.bank\_locator                        |          |
-| dmi.memory.cache\_size                          |          |
-| dmi.memory.configured\_memory\_speed            |          |
-| dmi.memory.configured\_voltage                  |          |
-| dmi.memory.data\_width                          |          |
-| dmi.memory.error\_correction\_type              |          |
-| dmi.memory.error\_information\_handle           |          |
-| dmi.memory.form\_factor                         |          |
-| dmi.memory.location                             |          |
-| dmi.memory.locator                              |          |
-| dmi.memory.logical\_size                        |          |
-| dmi.memory.manufacturer                         |          |
-| dmi.memory.maximum\_capacity                    |          |
-| dmi.memory.memory\_operating\_mode\_capability  |          |
-| dmi.memory.memory\_technology                   |          |
-| dmi.memory.module\_manufacturer\_id             |          |
-| dmi.memory.non-volatile\_size                   |          |
-| dmi.memory.number\_of\_devices                  |          |
-| dmi.memory.part\_number                         |          |
-| dmi.memory.rank                                 |          |
-| dmi.memory.serial\_number                       |          |
-| dmi.memory.set                                  |          |
-| dmi.memory.size                                 |          |
-| dmi.memory.speed                                |          |
-| dmi.memory.total\_width                         |          |
-| dmi.memory.type                                 |          |
-| dmi.memory.type\_detail                         |          |
-| dmi.memory.use                                  |          |
-| dmi.memory.volatile\_size                       |          |
+| dmi.memory.array\_handle                        |          | `dmidecode.go`    |
+| dmi.memory.asset\_tag                           |          | `dmidecode.go`    |
+| dmi.memory.bank\_locator                        |          | `dmidecode.go`    |
+| dmi.memory.cache\_size                          |          | `dmidecode.go`    |
+| dmi.memory.configured\_memory\_speed            |          | `dmidecode.go`    |
+| dmi.memory.configured\_voltage                  |          | `dmidecode.go`    |
+| dmi.memory.data\_width                          |          | `dmidecode.go`    |
+| dmi.memory.error\_correction\_type              |          | `dmidecode.go`    |
+| dmi.memory.error\_information\_handle           |          | `dmidecode.go`    |
+| dmi.memory.form\_factor                         |          | `dmidecode.go`    |
+| dmi.memory.location                             |          | `dmidecode.go`    |
+| dmi.memory.locator                              |          | `dmidecode.go`    |
+| dmi.memory.logical\_size                        |          | `dmidecode.go`    |
+| dmi.memory.manufacturer                         |          | `dmidecode.go`    |
+| dmi.memory.maximum\_capacity                    |          | `dmidecode.go`    |
+| dmi.memory.memory\_operating\_mode\_capability  |          | `dmidecode.go`    |
+| dmi.memory.memory\_technology                   |          | `dmidecode.go`    |
+| dmi.memory.module\_manufacturer\_id             |          | `dmidecode.go`    |
+| dmi.memory.non-volatile\_size                   |          | `dmidecode.go`    |
+| dmi.memory.number\_of\_devices                  |          | `dmidecode.go`    |
+| dmi.memory.part\_number                         |          | `dmidecode.go`    |
+| dmi.memory.rank                                 |          | `dmidecode.go`    |
+| dmi.memory.serial\_number                       |          | `dmidecode.go`    |
+| dmi.memory.set                                  |          | `dmidecode.go`    |
+| dmi.memory.size                                 |          | `dmidecode.go`    |
+| dmi.memory.speed                                |          | `dmidecode.go`    |
+| dmi.memory.total\_width                         |          | `dmidecode.go`    |
+| dmi.memory.type                                 |          | `dmidecode.go`    |
+| dmi.memory.type\_detail                         |          | `dmidecode.go`    |
+| dmi.memory.use                                  |          | `dmidecode.go`    |
+| dmi.memory.volatile\_size                       |          | `dmidecode.go`    |
 | dmi.meta.cpu\_socket\_count                     |          |
-| dmi.processor.asset\_tag                        |          |
-| dmi.processor.core\_count                       |          |
-| dmi.processor.core\_enabled                     |          |
-| dmi.processor.current\_speed                    |          |
-| dmi.processor.external\_clock                   |          |
-| dmi.processor.family                            |          |
-| dmi.processor.id                                |          |
-| dmi.processor.l1\_cache\_handle                 |          |
-| dmi.processor.l2\_cache\_handle                 |          |
-| dmi.processor.l3\_cache\_handle                 |          |
-| dmi.processor.manufacturer                      |          |
-| dmi.processor.max\_speed                        |          |
-| dmi.processor.part\_number                      |          |
-| dmi.processor.serial\_number                    |          |
-| dmi.processor.signature                         |          |
-| dmi.processor.socket\_designation               |          |
-| dmi.processor.status                            |          |
-| dmi.processor.thread\_count                     |          |
-| dmi.processor.type                              |          |
-| dmi.processor.upgrade                           |          |
-| dmi.processor.version                           |          |
-| dmi.processor.voltage                           |          |
-| dmi.slot.bus\_address                           |          |
-| dmi.slot.characteristics                        |          |
-| dmi.slot.current\_usage                         |          |
-| dmi.slot.designation                            |          |
-| dmi.slot.length                                 |          |
-| dmi.slot.type                                   |          |
-| dmi.system.family                               |          |
-| dmi.system.manufacturer                         | yes      |
-| dmi.system.product\_name                        |          |
-| dmi.system.serial\_number                       |          |
-| dmi.system.sku\_number                          |          |
-| dmi.system.uuid                                 | yes      |
-| dmi.system.version                              |          |
-| dmi.system.wake-up\_type                        |          |
+| dmi.processor.asset\_tag                        |          | `dmidecode.go`    |
+| dmi.processor.core\_count                       |          | `dmidecode.go`    |
+| dmi.processor.core\_enabled                     |          | `dmidecode.go`    |
+| dmi.processor.current\_speed                    |          | `dmidecode.go`    |
+| dmi.processor.external\_clock                   |          | `dmidecode.go`    |
+| dmi.processor.family                            |          | `dmidecode.go`    |
+| dmi.processor.id                                |          | `dmidecode.go`    |
+| dmi.processor.l1\_cache\_handle                 |          | `dmidecode.go`    |
+| dmi.processor.l2\_cache\_handle                 |          | `dmidecode.go`    |
+| dmi.processor.l3\_cache\_handle                 |          | `dmidecode.go`    |
+| dmi.processor.manufacturer                      |          | `dmidecode.go`    |
+| dmi.processor.max\_speed                        |          | `dmidecode.go`    |
+| dmi.processor.part\_number                      |          | `dmidecode.go`    |
+| dmi.processor.serial\_number                    |          | `dmidecode.go`    |
+| dmi.processor.signature                         |          | `dmidecode.go`    |
+| dmi.processor.socket\_designation               |          | `dmidecode.go`    |
+| dmi.processor.status                            |          | `dmidecode.go`    |
+| dmi.processor.thread\_count                     |          | `dmidecode.go`    |
+| dmi.processor.type                              |          | `dmidecode.go`    |
+| dmi.processor.upgrade                           |          | `dmidecode.go`    |
+| dmi.processor.version                           |          | `dmidecode.go`    |
+| dmi.processor.voltage                           |          | `dmidecode.go`    |
+| dmi.slot.bus\_address                           |          | `dmidecode.go`    |
+| dmi.slot.characteristics                        |          | `dmidecode.go`    |
+| dmi.slot.current\_usage                         |          | `dmidecode.go`    |
+| dmi.slot.designation                            |          | `dmidecode.go`    |
+| dmi.slot.length                                 |          | `dmidecode.go`    |
+| dmi.slot.type                                   |          | `dmidecode.go`    |
+| dmi.system.family                               |          | `dmidecode.go`    |
+| dmi.system.manufacturer                         | yes      | `dmidecode.go`    |
+| dmi.system.product\_name                        |          | `dmidecode.go`    |
+| dmi.system.serial\_number                       | yes      | `dmidecode.go`    |
+| dmi.system.sku\_number                          |          | `dmidecode.go`    |
+| dmi.system.uuid                                 | yes      | `dmidecode.go`    |
+| dmi.system.version                              |          | `dmidecode.go`    |
+| dmi.system.wake-up\_type                        |          | `dmidecode.go`    |
 | gcp\_instance\_id                               | yes      |
 | gcp\_license\_codes                             | yes      |
 | gcp\_project\_id                                | yes      |
@@ -243,6 +243,6 @@ $ make run
 | uname.release                                   | yes      | `uname.go`        |
 | uname.sysname                                   | yes      | `uname.go`        |
 | uname.version                                   |          | `uname.go`        |
-| virt.host\_type                                 |          | `virt.go`         |
+| virt.host\_type                                 | yes      | `virt.go`         |
 | virt.is\_guest                                  | yes      | `virt.go`         |
 | virt.uuid                                       | yes      | `virt.go`         |

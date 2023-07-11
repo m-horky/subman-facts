@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"git.sr.ht/~spc/go-log"
+	"github.com/mitchellh/mapstructure"
 	"strings"
 )
 
@@ -55,7 +56,7 @@ const (
 	processorAdditionalInformation     = 44
 )
 
-type DmidecodeSection struct {
+type dmidecodeSection struct {
 	Handle      int            `json:"handle"`
 	Type        int            `json:"type"`
 	Length      int            `json:"length"`
@@ -63,12 +64,12 @@ type DmidecodeSection struct {
 	Values      map[string]any `json:"values"`
 }
 
-type DmidecodeData struct {
-	Data []DmidecodeSection `json:"data"`
+type dmidecodeData struct {
+	Data []dmidecodeSection `json:"data"`
 }
 
-func (d DmidecodeData) getSections(section int) ([]DmidecodeSection, error) {
-	var sections []DmidecodeSection
+func (d dmidecodeData) getSections(section int) ([]dmidecodeSection, error) {
+	var sections []dmidecodeSection
 	for _, dmiSection := range d.Data {
 		if dmiSection.Type == section {
 			sections = append(sections, dmiSection)
@@ -80,25 +81,118 @@ func (d DmidecodeData) getSections(section int) ([]DmidecodeSection, error) {
 	return sections, nil
 }
 
-type DmidecodeBiosFacts struct {
-	Address                    string `json:"address"`
-	Revision                   string `json:"revision"`
-	CurrentlyInstalledLanguage string `json:"currently_installed_language"`
-	FirmwareRevision           string `json:"firmware_revision"`
-	LanguageDescriptionFormat  string `json:"language_description_format"`
-	ReleaseDate                string `json:"release_date"`
-	ROMSize                    string `json:"rom_size"`
-	RuntimeSize                string `json:"runtime_size"`
-	Vendor                     string `json:"vendor"`
-	Version                    string `json:"version"`
+type DmidecodeBaseboardFacts struct {
+	ChassisHandle          string `json:"chassis_handle" mapstructure:"chassis_handle"`
+	ContainedObjectHandles int    `json:"contained_object_handles" mapstructure:"contained_object_handles"`
+	Manufacturer           string `json:"manufacturer" mapstructure:"manufacturer"`
+	ProductName            string `json:"product_name" mapstructure:"product_name"`
+	SerialNumber           string `json:"serial_number" mapstructure:"serial_number"`
+	Type                   string `json:"type" mapstructure:"type"`
+	Version                string `json:"version" mapstructure:"version"`
 }
-type DmidecodeProcessorFacts struct{}
-type DmidecodeBaseboardFacts struct{}
-type DmidecodeChassisFacts struct{}
-type DmidecodeSlotFacts struct{}
-type DmidecodeSystemFacts struct{}
-type DmidecodeMemoryFacts struct{}
-type DmidecodeConnectorFacts struct{}
+type DmidecodeBiosFacts struct {
+	Address                    string `json:"address" mapstructure:"address"`
+	Revision                   string `json:"revision" mapstructure:"bios_revision"`
+	CurrentlyInstalledLanguage string `json:"currently_installed_language" mapstructure:"currently_installed_language"`
+	FirmwareRevision           string `json:"firmware_revision" mapstructure:"firmware_revision"`
+	LanguageDescriptionFormat  string `json:"language_description_format" mapstructure:"language_description_format"`
+	ReleaseDate                string `json:"release_date" mapstructure:"release_date"`
+	ROMSize                    string `json:"rom_size" mapstructure:"rom_size"`
+	RuntimeSize                string `json:"runtime_size" mapstructure:"runtime_size"`
+	Vendor                     string `json:"vendor" mapstructure:"vendor"`
+	Version                    string `json:"version" mapstructure:"version"`
+}
+type DmidecodeChassisFacts struct {
+	AssetTag          string `json:"asset_tag" mapstructure:"asset_tag"`
+	ContainedElements int    `json:"contained_elements" mapstructure:"contained_elements"`
+	Lock              string `json:"lock" mapstructure:"lock"`
+	Manufacturer      string `json:"manufacturer" mapstructure:"manufacturer"`
+	OEMInformation    string `json:"oem_information" mapstructure:"oem_information"`
+	SerialNumber      string `json:"serial_number" mapstructure:"serial_number"`
+	Type              string `json:"type" mapstructure:"type"`
+	Version           string `json:"version" mapstructure:"version"`
+}
+type DmidecodeConnectorFacts struct {
+	ExternalConnectorType       string `json:"external_connector_type" mapstructure:"external_connector_type"`
+	ExternalReferenceDesignator string `json:"external_reference_designator" mapstructure:"external_reference_designator"`
+	InternalConnectorType       string `json:"internal_connector_type" mapstructure:"internal_connector_type"`
+	PortType                    string `json:"port_type" mapstructure:"port_type"`
+}
+type DmidecodeMemoryFacts struct {
+	ArrayHandle                   string `json:"array_handle" mapstructure:"array_handle"`
+	AssetTag                      string `json:"asset_tag" mapstructure:"asset_tag"`
+	BankLocator                   string `json:"bank_locator" mapstructure:"bank_locator"`
+	CacheSize                     string `json:"cache_size" mapstructure:"cache_size"`
+	ConfiguredMemorySpeed         string `json:"configured_memory_speed" mapstructure:"configured_memory_speed"`
+	ConfiguredVoltage             string `json:"configured_voltage" mapstructure:"configured_voltage"`
+	DataWidth                     string `json:"data_width" mapstructure:"data_width"`
+	ErrorCorrectionType           string `json:"error_correction_type" mapstructure:"error_correction_type"`
+	ErrorInformationHandle        string `json:"error_information_handle" mapstructure:"error_information_handle"`
+	FormFactor                    string `json:"form_factor" mapstructure:"form_factor"`
+	Location                      string `json:"location" mapstructure:"location"`
+	Locator                       string `json:"locator" mapstructure:"locator"`
+	LogicalSize                   string `json:"logical_size" mapstructure:"logical_size"`
+	Manufacturer                  string `json:"manufacturer" mapstructure:"manufacturer"`
+	MaximumCapacity               string `json:"maximum_capacity" mapstructure:"maximum_capacity"`
+	MemoryOperatingModeCapability string `json:"memory_operating_mode_capability" mapstructure:"memory_operating_mode_capability"`
+	MemoryTechnology              string `json:"memory_technology" mapstructure:"memory_technology"`
+	ModuleManufacturerID          string `json:"module_manufacturer_id" mapstructure:"module_manufacturer_id"`
+	NonVolatileSize               string `json:"non-volatile_size" mapstructure:"non-volatile_size"`
+	NumberOfDevices               string `json:"number_of_devices" mapstructure:"number_of_devices"`
+	PortNumber                    string `json:"part_number" mapstructure:"part_number"`
+	Rank                          string `json:"rank" mapstructure:"rank"`
+	SerialNumber                  string `json:"serial_number" mapstructure:"serial_number"`
+	Set                           string `json:"set" mapstructure:"set"`
+	Size                          string `json:"size" mapstructure:"size"`
+	Speed                         string `json:"speed" mapstructure:"speed"`
+	TotalWidth                    string `json:"total_width" mapstructure:"total_width"`
+	Type                          string `json:"type" mapstructure:"type"`
+	TypeDetail                    string `json:"type_detail" mapstructure:"type_detail"`
+	Use                           string `json:"use" mapstructure:"use"`
+	VolatileSize                  string `json:"volatile_size" mapstructure:"volatile_size"`
+}
+type DmidecodeProcessorFacts struct {
+	AssetTag          string `json:"asset_tag" mapstructure:"asset_tag"`
+	CoreCount         string `json:"core_count" mapstructure:"core_count"`
+	CoreEnabled       string `json:"core_enabled" mapstructure:"core_enabled"`
+	CurrentSpeed      string `json:"current_speed" mapstructure:"current_speed"`
+	ExternalClock     string `json:"external_clock" mapstructure:"external_clock"`
+	Family            string `json:"family" mapstructure:"family"`
+	ID                string `json:"id" mapstructure:"id"`
+	L1CacheHandle     string `json:"l1_cache_handle" mapstructure:"l1_cache_handle"`
+	L2CacheHandle     string `json:"l2_cache_handle" mapstructure:"l2_cache_handle"`
+	L3CacheHandle     string `json:"l3_cache_handle" mapstructure:"l3_cache_handle"`
+	Manufacturer      string `json:"manufacturer" mapstructure:"manufacturer"`
+	MaxSpeed          string `json:"max_speed" mapstructure:"max_speed"`
+	PartNumber        string `json:"part_number" mapstructure:"part_number"`
+	SerialNumber      string `json:"serial_number" mapstructure:"serial_number"`
+	Signature         string `json:"signature" mapstructure:"signature"`
+	SocketDesignation string `json:"socket_designation" mapstructure:"socket_designation"`
+	Status            string `json:"status" mapstructure:"status"`
+	ThreadCount       string `json:"thread_count" mapstructure:"thread_count"`
+	Type              string `json:"type" mapstructure:"type"`
+	Upgrade           string `json:"upgrade" mapstructure:"upgrade"`
+	Version           string `json:"version" mapstructure:"version"`
+	Voltage           string `json:"voltage" mapstructure:"voltage"`
+}
+type DmidecodeSlotFacts struct {
+	BusAddress      string `json:"bus_address" mapstructure:"bus_address"`
+	Characteristics string `json:"characteristics" mapstructure:"characteristics"`
+	CurrentUsage    string `json:"current_usage" mapstructure:"current_usage"`
+	Designation     string `json:"designation" mapstructure:"designation"`
+	Length          string `json:"other" mapstructure:"length"`
+	Type            string `json:"type" mapstructure:"type"`
+}
+type DmidecodeSystemFacts struct {
+	Family       string `json:"family" mapstructure:"family"`
+	Manufacturer string `json:"manufacturer" mapstructure:"manufacturer"`
+	ProductName  string `json:"product_name" mapstructure:"product_name"`
+	SerialNumber string `json:"serial_number" mapstructure:"serial_number"`
+	SKUNumber    string `json:"sku_number" mapstructure:"sku_number"`
+	UUID         string `json:"uuid" mapstructure:"uuid"`
+	Version      string `json:"version" mapstructure:"version"`
+	WakeUpType   string `json:"wake-up_type" mapstructure:"wake-up_type"`
+}
 
 type DmidecodeFacts struct {
 	BIOS      DmidecodeBiosFacts      `json:"bios"`
@@ -138,72 +232,178 @@ func (c *DmidecodeCollector) collect() error {
 		return err
 	}
 
-	var dmidecodeOutput DmidecodeData
+	var dmidecodeOutput dmidecodeData
 	err = json.Unmarshal([]byte(strings.Join(stdout, "")), &dmidecodeOutput)
 	if err != nil {
 		log.Errorf("Could not decode output of dmidecode: %s", err)
 		return err
 	}
 
-	// QUIRK: Specific collectors use the latest handle (likely the one with the highest value).
+	// QUIRK: Specific collectors use the latest Handle (likely the one with the highest value).
 	//  This makes it compatible with subscription-manager and python-dmidecode library.
-	fmt.Print("\u001B[2m")
+	_ = c.collectBaseboard(dmidecodeOutput)
 	_ = c.collectBios(dmidecodeOutput)
-	fmt.Print("\u001B[0m")
+	_ = c.collectChassis(dmidecodeOutput)
+	_ = c.collectMemory(dmidecodeOutput)
+	_ = c.collectProcessor(dmidecodeOutput)
+	_ = c.collectSystem(dmidecodeOutput)
+	_ = c.collectSlot(dmidecodeOutput)
 
 	c.collected = true
 	return nil
-
 }
 
-func (c *DmidecodeCollector) collectBios(data DmidecodeData) error {
-	biosSections, _ := data.getSections(biosInformation)
-	if len(biosSections) > 0 {
-		section := biosSections[len(biosSections)-1]
-		for key, rawValue := range section.Values {
-			value := fmt.Sprintf("%s", rawValue)
+func (c *DmidecodeCollector) collectBaseboard(data dmidecodeData) error {
+	sections, _ := data.getSections(baseboardInformation)
+	if len(sections) > 0 {
+		section := sections[len(sections)-1]
 
-			switch key {
-			case "address":
-				// QUIRK: Addresses (0x) are reported as lowercase
-				c.data.BIOS.Address = strings.ToLower(value)
-			case "bios_revision":
-				c.data.BIOS.Revision = value
-			case "firmware_revision":
-				c.data.BIOS.FirmwareRevision = value
-			case "release_date":
-				c.data.BIOS.ReleaseDate = value
-			case "rom_size":
-				c.data.BIOS.ROMSize = value
-			case "runtime_size":
-				c.data.BIOS.RuntimeSize = value
-			case "vendor":
-				c.data.BIOS.Vendor = value
-			case "version":
-				c.data.BIOS.Version = value
-			case "characteristics":
-				continue
-			default:
-				log.Debugf("Ignoring dmidecode BIOS key: %s = %s", key, value)
-			}
+		facts := DmidecodeBaseboardFacts{}
+		err := mapstructure.Decode(section.Values, &facts)
+		if err != nil {
+			log.Errorf("Failed to decode DMI slot facts: %s", err)
+			return err
 		}
+		c.data.Baseboard = facts
+	}
+	return nil
+}
+
+func (c *DmidecodeCollector) collectBios(data dmidecodeData) error {
+	sections, _ := data.getSections(biosInformation)
+	if len(sections) > 0 {
+		section := sections[len(sections)-1]
+
+		facts := DmidecodeBiosFacts{}
+		err := mapstructure.Decode(section.Values, &facts)
+		if err != nil {
+			log.Errorf("Failed to decode DMI bios facts: %s", err)
+			return err
+		}
+		c.data.BIOS = facts
 	}
 
-	biosLanguageSections, _ := data.getSections(biosLanguageInformation)
-	if len(biosLanguageSections) > 0 {
-		section := biosLanguageSections[len(biosLanguageSections)-1]
-		for key, rawValue := range section.Values {
-			value := fmt.Sprintf("%s", rawValue)
+	langSections, _ := data.getSections(biosLanguageInformation)
+	if len(langSections) > 0 {
+		section := langSections[len(langSections)-1]
 
-			switch key {
-			case "language_description_format":
-				c.data.BIOS.LanguageDescriptionFormat = value
-			case "currently_installed_language":
-				c.data.BIOS.CurrentlyInstalledLanguage = value
-			default:
-				log.Debugf("Ignoring dmidecode BIOS key: %s = %s", key, value)
-			}
+		facts := DmidecodeBiosFacts{}
+		err := mapstructure.Decode(section.Values, &facts)
+		if err != nil {
+			log.Errorf("Failed to decode DMI bios language facts: %s", err)
+			return err
 		}
+		c.data.BIOS.LanguageDescriptionFormat = facts.LanguageDescriptionFormat
+		c.data.BIOS.CurrentlyInstalledLanguage = facts.CurrentlyInstalledLanguage
+
 	}
+
+	// QUIRK: Address is lowercase
+	c.data.BIOS.Address = strings.ToLower(c.data.BIOS.Address)
+	return nil
+}
+
+func (c *DmidecodeCollector) collectChassis(data dmidecodeData) error {
+	sections, _ := data.getSections(systemEnclosureOrChassis)
+	if len(sections) > 0 {
+		section := sections[len(sections)-1]
+
+		facts := DmidecodeChassisFacts{}
+		err := mapstructure.Decode(section.Values, &facts)
+		if err != nil {
+			log.Errorf("Failed to decode DMI system facts: %s", err)
+			return err
+		}
+		c.data.Chassis = facts
+	}
+	return nil
+}
+
+func (c *DmidecodeCollector) collectMemory(data dmidecodeData) error {
+	sections, _ := data.getSections(memoryDevice)
+	if len(sections) > 0 {
+		section := sections[len(sections)-1]
+
+		facts := DmidecodeMemoryFacts{}
+		err := mapstructure.Decode(section.Values, &facts)
+		if err != nil {
+			log.Errorf("Failed to decode DMI slot facts: %s", err)
+			return err
+		}
+		c.data.Memory = facts
+	}
+
+	physSections, _ := data.getSections(physicalMemoryArray)
+	if len(physSections) > 0 {
+		section := physSections[len(physSections)-1]
+
+		facts := DmidecodeMemoryFacts{}
+		err := mapstructure.Decode(section.Values, &facts)
+		if err != nil {
+			log.Errorf("Failed to decode DMI slot facts: %s", err)
+			return err
+		}
+		c.data.Memory.ErrorCorrectionType = facts.ErrorCorrectionType
+		c.data.Memory.ErrorInformationHandle = facts.ErrorInformationHandle
+		c.data.Memory.Location = facts.Location
+		c.data.Memory.MaximumCapacity = facts.MaximumCapacity
+		c.data.Memory.NumberOfDevices = facts.NumberOfDevices
+		c.data.Memory.Use = facts.Use
+	}
+	return nil
+}
+
+func (c *DmidecodeCollector) collectProcessor(data dmidecodeData) error {
+	sections, _ := data.getSections(processorInformation)
+	if len(sections) > 0 {
+		section := sections[len(sections)-1]
+
+		facts := DmidecodeProcessorFacts{}
+		err := mapstructure.Decode(section.Values, &facts)
+		if err != nil {
+			log.Errorf("Failed to decode DMI system facts: %s", err)
+			return err
+		}
+		c.data.Processor = facts
+	}
+	return nil
+}
+
+func (c *DmidecodeCollector) collectSlot(data dmidecodeData) error {
+	sections, _ := data.getSections(systemSlots)
+	if len(sections) > 0 {
+		section := sections[len(sections)-1]
+
+		facts := DmidecodeSlotFacts{}
+		err := mapstructure.Decode(section.Values, &facts)
+		if err != nil {
+			log.Errorf("Failed to decode DMI slot facts: %s", err)
+			return err
+		}
+		c.data.Slot = facts
+	}
+	return nil
+}
+
+func (c *DmidecodeCollector) collectSystem(data dmidecodeData) error {
+	// NOTE The original subscription-manager implementation also included
+	//  systemConfigurationOptions section. However, it does not provide anything the
+	//  systemInformation would not already provide.
+
+	sections, _ := data.getSections(systemInformation)
+	if len(sections) > 0 {
+		section := sections[len(sections)-1]
+
+		facts := DmidecodeSystemFacts{}
+		err := mapstructure.Decode(section.Values, &facts)
+		if err != nil {
+			log.Errorf("Failed to decode DMI system facts: %s", err)
+			return err
+		}
+		c.data.System = facts
+	}
+
+	// QUIRK: UUID is uppercase
+	c.data.System.UUID = strings.ToUpper(c.data.System.UUID)
 	return nil
 }
