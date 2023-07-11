@@ -11,7 +11,6 @@ import (
 type AllFacts struct {
 	CustomFacts       CustomFacts       `json:"custom"`
 	DistributionFacts DistributionFacts `json:"distribution"`
-	DmidecodeFacts    DmidecodeFacts    `json:"dmidecode"`
 	InsightsFacts     InsightsFacts     `json:"insights"`
 	KpatchFacts       KpatchFacts       `json:"kpatch"`
 	MemoryFacts       MemoryFacts       `json:"memory"`
@@ -20,6 +19,7 @@ type AllFacts struct {
 	UnameFacts        UnameFacts        `json:"uname"`
 	UptimeFacts       UptimeFacts       `json:"uptime"`
 	VirtFacts         VirtFacts         `json:"virt"`
+	DmidecodeFacts    *DmidecodeFacts   `json:"dmidecode,omitempty"`
 	AWSFacts          *AWSFacts         `json:"aws,omitempty"`
 	AzureFacts        *AzureFacts       `json:"azure,omitempty"`
 	GCPFacts          *GCPFacts         `json:"gcp,omitempty"`
@@ -30,7 +30,6 @@ func CollectAll() AllFacts {
 
 	everything.CustomFacts, _ = (&CustomCollector{}).GetData(true)
 	everything.DistributionFacts, _ = (&DistributionCollector{}).GetData(true)
-	everything.DmidecodeFacts, _ = (&DmidecodeCollector{}).GetData(true)
 	everything.InsightsFacts, _ = (&InsightsCollector{}).GetData(true)
 	everything.KpatchFacts, _ = (&KpatchCollector{}).GetData(true)
 	everything.MemoryFacts, _ = (&MemoryCollector{}).GetData(true)
@@ -40,6 +39,13 @@ func CollectAll() AllFacts {
 	everything.UptimeFacts, _ = (&UptimeCollector{}).GetData(true)
 	everything.VirtFacts, _ = (&VirtCollector{}).GetData(true)
 
+	// Following facts are only collectable with root permissions
+	dmiFacts, err := (&DmidecodeCollector{}).GetData(true)
+	if err == nil {
+		*everything.DmidecodeFacts = dmiFacts
+	}
+
+	// Following facts are only collectable in their specific cloud environments
 	awsFacts, err := (&AWSCollector{}).GetData(true)
 	if err == nil {
 		*everything.AWSFacts = awsFacts
