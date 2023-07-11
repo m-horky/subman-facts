@@ -49,17 +49,17 @@ $ make run
 | dmi.baseboard.serial\_number                    |          |
 | dmi.baseboard.type                              |          |
 | dmi.baseboard.version                           |          |
-| dmi.bios.address                                |          |
-| dmi.bios.bios\_revision                         |          |
-| dmi.bios.currently\_installed\_language         |          |
-| dmi.bios.firmware\_revision                     |          |
+| dmi.bios.address                                |          | `bios.go`         |
+| dmi.bios.bios\_revision                         |          | `bios.go`         |
+| dmi.bios.currently\_installed\_language         |          | `bios.go`         |
+| dmi.bios.firmware\_revision                     |          | `bios.go`         |
 | dmi.bios.installable\_languages                 |          |
-| dmi.bios.language\_description\_format          |          |
-| dmi.bios.release\_date                          |          |
-| dmi.bios.rom\_size                              |          |
-| dmi.bios.runtime\_size                          |          |
-| dmi.bios.vendor                                 | yes      |
-| dmi.bios.version                                | yes      |
+| dmi.bios.language\_description\_format          |          | `bios.go`         |
+| dmi.bios.release\_date                          |          | `bios.go`         |
+| dmi.bios.rom\_size                              |          | `bios.go`         |
+| dmi.bios.runtime\_size                          |          | `bios.go`         |
+| dmi.bios.vendor                                 | yes      | `bios.go`         |
+| dmi.bios.version                                | yes      | `bios.go`         |
 | dmi.chassis.asset\_tag                          | yes      |
 | dmi.chassis.contained\_elements                 |          |
 | dmi.chassis.lock                                |          |
