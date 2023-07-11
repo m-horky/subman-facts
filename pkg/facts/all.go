@@ -1,8 +1,8 @@
 package facts
 
 import (
+	"bytes"
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -67,30 +67,20 @@ func getCommandOutput(command string, args ...string) ([]string, []string, error
 		cmdStr = fmt.Sprintf("%s %s", path, strings.Join(args, " "))
 	}
 
+	// TODO Use context to set languages to C.UTF-8
 	cmd := exec.Command(path, args...)
-	stdoutPipe, err := cmd.StdoutPipe()
-	if err != nil {
-		return []string{}, []string{}, fmt.Errorf("could not connect stdout of %s: %s", path, err)
-	}
-	stderrPipe, err := cmd.StderrPipe()
-	if err != nil {
-		return []string{}, []string{}, fmt.Errorf("could not connect stderr of %s: %s", path, err)
-	}
+	var outBuffer, errBuffer bytes.Buffer
+	cmd.Stdout = &outBuffer
+	cmd.Stderr = &errBuffer
 
-	err = cmd.Start()
+	err = cmd.Run()
+	stdout := strings.Split(strings.TrimRight(outBuffer.String(), "\n"), "\n")
+	stderr := strings.Split(strings.TrimRight(errBuffer.String(), "\n"), "\n")
 	if err != nil {
-		return []string{}, []string{}, fmt.Errorf("could not invoke %s: %s", cmdStr, err)
+		return stdout, stderr, fmt.Errorf("could not invoke %s: %s", cmdStr, err)
 	}
 
-	stdout, _ := io.ReadAll(stdoutPipe)
-	stderr, _ := io.ReadAll(stderrPipe)
-
-	err = cmd.Wait()
-	if err != nil {
-		return []string{}, []string{}, fmt.Errorf("could not run %s: %s", cmdStr, err)
-	}
-
-	return strings.Split(string(stdout), "\n"), strings.Split(string(stderr), "\n"), nil
+	return stdout, stderr, nil
 }
 
 // getFileOutput reads a file and returns the lines.
