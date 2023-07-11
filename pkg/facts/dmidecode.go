@@ -244,6 +244,7 @@ func (c *DmidecodeCollector) collect() error {
 	_ = c.collectBaseboard(dmidecodeOutput)
 	_ = c.collectBios(dmidecodeOutput)
 	_ = c.collectChassis(dmidecodeOutput)
+	_ = c.collectConnector(dmidecodeOutput)
 	_ = c.collectMemory(dmidecodeOutput)
 	_ = c.collectProcessor(dmidecodeOutput)
 	_ = c.collectSystem(dmidecodeOutput)
@@ -315,6 +316,22 @@ func (c *DmidecodeCollector) collectChassis(data dmidecodeData) error {
 			return err
 		}
 		c.data.Chassis = facts
+	}
+	return nil
+}
+
+func (c *DmidecodeCollector) collectConnector(data dmidecodeData) error {
+	sections, _ := data.getSections(portConnectorInformation)
+	if len(sections) > 0 {
+		section := sections[len(sections)-1]
+
+		facts := DmidecodeConnectorFacts{}
+		err := mapstructure.Decode(section.Values, &facts)
+		if err != nil {
+			log.Errorf("Failed to decode DMI system facts: %s", err)
+			return err
+		}
+		c.data.Connector = facts
 	}
 	return nil
 }

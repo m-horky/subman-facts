@@ -42,13 +42,13 @@ $ make run
 | distribution.version                            | yes      | `distribution.go` |
 | distribution.version.modifier                   |          |
 | distributor_version                             | yes      | 3rd party (?)     |
-| dmi.baseboard.chassis\_handle                   |          |
-| dmi.baseboard.contained\_object\_handles        |          |
-| dmi.baseboard.manufacturer                      | yes      |
-| dmi.baseboard.product\_name                     |          |
-| dmi.baseboard.serial\_number                    |          |
-| dmi.baseboard.type                              |          |
-| dmi.baseboard.version                           | yes      |
+| dmi.baseboard.chassis\_handle                   |          | `dmidecode.go`    |
+| dmi.baseboard.contained\_object\_handles        |          | `dmidecode.go`    |
+| dmi.baseboard.manufacturer                      | yes      | `dmidecode.go`    |
+| dmi.baseboard.product\_name                     |          | `dmidecode.go`    |
+| dmi.baseboard.serial\_number                    |          | `dmidecode.go`    |
+| dmi.baseboard.type                              |          | `dmidecode.go`    |
+| dmi.baseboard.version                           | yes      | `dmidecode.go`    |
 | dmi.bios.address                                |          | `dmidecode.go`    |
 | dmi.bios.bios\_revision                         |          | `dmidecode.go`    |
 | dmi.bios.currently\_installed\_language         |          | `dmidecode.go`    |
@@ -68,10 +68,10 @@ $ make run
 | dmi.chassis.serial\_number                      | yes      | `dmidecode.go`    |
 | dmi.chassis.type                                |          | `dmidecode.go`    |
 | dmi.chassis.version                             | yes      | `dmidecode.go`    |
-| dmi.connector.external\_connector\_type         |          |
-| dmi.connector.external\_reference\_designator   |          |
-| dmi.connector.internal\_connector\_type         |          |
-| dmi.connector.port\_type                        |          |
+| dmi.connector.external\_connector\_type         |          | `dmidecode.go`    |
+| dmi.connector.external\_reference\_designator   |          | `dmidecode.go`    |
+| dmi.connector.internal\_connector\_type         |          | `dmidecode.go`    |
+| dmi.connector.port\_type                        |          | `dmidecode.go`    |
 | dmi.memory.array\_handle                        |          | `dmidecode.go`    |
 | dmi.memory.asset\_tag                           |          | `dmidecode.go`    |
 | dmi.memory.bank\_locator                        |          | `dmidecode.go`    |
