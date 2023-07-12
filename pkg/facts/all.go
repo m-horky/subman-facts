@@ -12,7 +12,6 @@ type AllFacts struct {
 	CustomFacts       CustomFacts       `json:"custom"`
 	DistributionFacts DistributionFacts `json:"distribution"`
 	InsightsFacts     InsightsFacts     `json:"insights"`
-	KpatchFacts       KpatchFacts       `json:"kpatch"`
 	MemoryFacts       MemoryFacts       `json:"memory"`
 	NetworkFacts      NetworkFacts      `json:"network"`
 	SystemFacts       SystemFacts       `json:"system"`
@@ -20,6 +19,7 @@ type AllFacts struct {
 	UptimeFacts       UptimeFacts       `json:"uptime"`
 	VirtFacts         VirtFacts         `json:"virt"`
 	DmidecodeFacts    *DmidecodeFacts   `json:"dmidecode,omitempty"`
+	KpatchFacts       *KpatchFacts      `json:"kpatch"`
 	AWSFacts          *AWSFacts         `json:"aws,omitempty"`
 	AzureFacts        *AzureFacts       `json:"azure,omitempty"`
 	GCPFacts          *GCPFacts         `json:"gcp,omitempty"`
@@ -31,7 +31,6 @@ func CollectAll() AllFacts {
 	everything.CustomFacts, _ = (&CustomCollector{}).GetData(true)
 	everything.DistributionFacts, _ = (&DistributionCollector{}).GetData(true)
 	everything.InsightsFacts, _ = (&InsightsCollector{}).GetData(true)
-	everything.KpatchFacts, _ = (&KpatchCollector{}).GetData(true)
 	everything.MemoryFacts, _ = (&MemoryCollector{}).GetData(true)
 	everything.NetworkFacts, _ = (&NetworkCollector{}).GetData(true)
 	everything.SystemFacts, _ = (&SystemCollector{}).GetData(true)
@@ -43,6 +42,12 @@ func CollectAll() AllFacts {
 	dmiFacts, err := (&DmidecodeCollector{}).GetData(true)
 	if err == nil {
 		*everything.DmidecodeFacts = dmiFacts
+	}
+
+	// Following facts are only collected when their binaries are installed
+	kpatchFacts, err := (&KpatchCollector{}).GetData(true)
+	if err == nil {
+		*everything.KpatchFacts = kpatchFacts
 	}
 
 	// Following facts are only collectable in their specific cloud environments
