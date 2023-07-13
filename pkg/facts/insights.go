@@ -10,6 +10,10 @@ type InsightsCollector struct {
 	collected bool
 }
 
+func NewInsightsCollector() InsightsCollector {
+	return InsightsCollector{}
+}
+
 func (c *InsightsCollector) GetData(rescan bool) (InsightsFacts, error) {
 	if rescan || !c.collected {
 		c.data = InsightsFacts{}

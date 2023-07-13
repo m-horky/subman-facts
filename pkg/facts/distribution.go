@@ -22,11 +22,9 @@ type DistributionCollector struct {
 
 func NewDistributionCollector() DistributionCollector {
 	return DistributionCollector{
-		data:      DistributionFacts{},
-		collected: false,
-		getFileOutput: func(path string) ([]string, error) {
-			return getFileOutput(path)
-		},
+		data:          DistributionFacts{},
+		collected:     false,
+		getFileOutput: getFileOutput,
 	}
 }
 

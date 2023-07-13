@@ -16,6 +16,10 @@ type AWSCollector struct {
 	collected bool
 }
 
+func NewAWSCollector() AWSCollector {
+	return AWSCollector{}
+}
+
 func (c *AWSCollector) GetData(rescan bool) (AWSFacts, error) {
 	if rescan || !c.collected {
 		c.data = AWSFacts{}

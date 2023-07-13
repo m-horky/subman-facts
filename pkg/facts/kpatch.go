@@ -25,6 +25,10 @@ type KpatchCollector struct {
 	collected bool
 }
 
+func NewKpatchCollector() KpatchCollector {
+	return KpatchCollector{}
+}
+
 func (c *KpatchCollector) GetData(rescan bool) (KpatchFacts, error) {
 	if rescan || !c.collected {
 		c.data = KpatchFacts{}

@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type IPRouteAddress struct {
+type iPRouteAddress struct {
 	Family            string `json:"family"`
 	Local             string `json:"local"`
 	PrefixLength      int    `json:"prefixlen"`
@@ -17,7 +17,7 @@ type IPRouteAddress struct {
 	PreferredLifeTime int    `json:"preferred_life_time"`
 }
 
-type IPRouteInterface struct {
+type iPRouteInterface struct {
 	IfIndex             int              `json:"ifindex"`
 	IfName              string           `json:"ifname"`
 	Flags               []string         `json:"flags"`
@@ -29,7 +29,7 @@ type IPRouteInterface struct {
 	LinkType            string           `json:"link_type"`
 	MACAddress          string           `json:"address"`
 	BroadcastMacAddress string           `json:"broadcast"`
-	Addresses           []IPRouteAddress `json:"addr_info"`
+	Addresses           []iPRouteAddress `json:"addr_info"`
 }
 
 type NetworkInterfaceFacts struct {
@@ -50,8 +50,17 @@ type NetworkFacts struct {
 
 // NetworkCollector contains facts from 'Network'
 type NetworkCollector struct {
-	data      NetworkFacts
-	collected bool
+	data             NetworkFacts
+	collected        bool
+	getCommandOutput func(command string, args ...string) ([]string, []string, error)
+}
+
+func NewNetworkCollector() NetworkCollector {
+	return NetworkCollector{
+		data:             NetworkFacts{},
+		collected:        false,
+		getCommandOutput: getCommandOutput,
+	}
 }
 
 // GetData collects 'ip' data and returns them as NetworkFacts.
@@ -87,7 +96,7 @@ func (c *NetworkCollector) collectHostname() error {
 }
 
 func (c *NetworkCollector) collectFQDN() error {
-	fullName, _, err := getCommandOutput("/usr/bin/hostname", "--fqdn")
+	fullName, _, err := c.getCommandOutput("/usr/bin/hostname", "--fqdn")
 	if err != nil {
 		log.Errorf("Could not collect fully qualified domain name: %s", err)
 		return err
@@ -97,14 +106,14 @@ func (c *NetworkCollector) collectFQDN() error {
 }
 
 func (c *NetworkCollector) collectIPRoute() error {
-	stdout, stderr, err := getCommandOutput("/usr/sbin/ip", "--json", "address")
+	stdout, stderr, err := c.getCommandOutput("/usr/sbin/ip", "--json", "address")
 	if err != nil {
 		log.Errorf("Could not read output of ip: %s (%s)", err, strings.Join(stderr, "\\n"))
 		return err
 	}
 	rawOutput := strings.Join(stdout, "\n")
 
-	var ipOutput []IPRouteInterface
+	var ipOutput []iPRouteInterface
 	err = json.Unmarshal([]byte(rawOutput), &ipOutput)
 	if err != nil {
 		log.Errorf("Could not decode output of ip: %s", err)

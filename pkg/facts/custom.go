@@ -10,6 +10,10 @@ type CustomCollector struct {
 	collected bool
 }
 
+func NewCustomCollector() CustomCollector {
+	return CustomCollector{}
+}
+
 func (c *CustomCollector) GetData(rescan bool) (CustomFacts, error) {
 	if rescan || !c.collected {
 		c.data = CustomFacts{}

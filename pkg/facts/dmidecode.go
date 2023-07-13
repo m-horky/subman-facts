@@ -206,8 +206,17 @@ type DmidecodeFacts struct {
 }
 
 type DmidecodeCollector struct {
-	data      DmidecodeFacts
-	collected bool
+	data             DmidecodeFacts
+	collected        bool
+	getCommandOutput func(command string, args ...string) ([]string, []string, error)
+}
+
+func NewDmidecodeCollector() DmidecodeCollector {
+	return DmidecodeCollector{
+		data:             DmidecodeFacts{},
+		collected:        false,
+		getCommandOutput: getCommandOutput,
+	}
 }
 
 func (c *DmidecodeCollector) GetData(rescan bool) (DmidecodeFacts, error) {

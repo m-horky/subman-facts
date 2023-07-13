@@ -10,6 +10,10 @@ type GCPCollector struct {
 	collected bool
 }
 
+func NewGCPCollector() GCPCollector {
+	return GCPCollector{}
+}
+
 func (c *GCPCollector) GetData(rescan bool) (GCPFacts, error) {
 	if rescan || !c.collected {
 		c.data = GCPFacts{}

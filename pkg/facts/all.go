@@ -28,40 +28,52 @@ type AllFacts struct {
 func CollectAll() AllFacts {
 	everything := AllFacts{}
 
-	everything.CustomFacts, _ = (&CustomCollector{}).GetData(true)
+	customCollector := NewCustomCollector()
+	everything.CustomFacts, _ = customCollector.GetData(true)
 	distributionCollector := NewDistributionCollector()
 	everything.DistributionFacts, _ = distributionCollector.GetData(true)
-	everything.InsightsFacts, _ = (&InsightsCollector{}).GetData(true)
+	insightsCollector := NewInsightsCollector()
+	everything.InsightsFacts, _ = insightsCollector.GetData(true)
 	memoryCollector := NewMemoryCollector()
 	everything.MemoryFacts, _ = memoryCollector.GetData(true)
-	everything.NetworkFacts, _ = (&NetworkCollector{}).GetData(true)
-	everything.SystemFacts, _ = (&SystemCollector{}).GetData(true)
-	everything.UnameFacts, _ = (&UnameCollector{}).GetData(true)
-	everything.UptimeFacts, _ = (&UptimeCollector{}).GetData(true)
-	everything.VirtFacts, _ = (&VirtCollector{}).GetData(true)
+	networkCollector := NewNetworkCollector()
+	everything.NetworkFacts, _ = networkCollector.GetData(true)
+	systemCollector := NewSystemCollector()
+	everything.SystemFacts, _ = systemCollector.GetData(true)
+	unameCollector := NewUnameCollector()
+	everything.UnameFacts, _ = unameCollector.GetData(true)
+	uptimeCollector := NewUptimeCollector()
+	everything.UptimeFacts, _ = uptimeCollector.GetData(true)
+	virtCollector := NewVirtCollector()
+	everything.VirtFacts, _ = virtCollector.GetData(true)
 
 	// Following facts are only collectable with root permissions
-	dmiFacts, err := (&DmidecodeCollector{}).GetData(true)
+	dmidecodeCollector := NewDmidecodeCollector()
+	dmiFacts, err := dmidecodeCollector.GetData(true)
 	if err == nil {
 		*everything.DmidecodeFacts = dmiFacts
 	}
 
 	// Following facts are only collected when their binaries are installed
-	kpatchFacts, err := (&KpatchCollector{}).GetData(true)
+	kpatchCollector := NewKpatchCollector()
+	kpatchFacts, err := kpatchCollector.GetData(true)
 	if err == nil {
 		*everything.KpatchFacts = kpatchFacts
 	}
 
 	// Following facts are only collectable in their specific cloud environments
-	awsFacts, err := (&AWSCollector{}).GetData(true)
+	awsCollector := NewAWSCollector()
+	awsFacts, err := awsCollector.GetData(true)
 	if err == nil {
 		*everything.AWSFacts = awsFacts
 	}
-	azureFacts, err := (&AzureCollector{}).GetData(true)
+	azureCollector := NewAzureCollector()
+	azureFacts, err := azureCollector.GetData(true)
 	if err == nil {
 		*everything.AzureFacts = azureFacts
 	}
-	gcpFacts, err := (&GCPCollector{}).GetData(true)
+	gcpCollector := NewGCPCollector()
+	gcpFacts, err := gcpCollector.GetData(true)
 	if err == nil {
 		*everything.GCPFacts = gcpFacts
 	}

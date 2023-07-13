@@ -10,6 +10,10 @@ type UptimeCollector struct {
 	collected bool
 }
 
+func NewUptimeCollector() UptimeCollector {
+	return UptimeCollector{}
+}
+
 func (c *UptimeCollector) GetData(rescan bool) (UptimeFacts, error) {
 	if rescan || !c.collected {
 		c.data = UptimeFacts{}

@@ -13,6 +13,10 @@ type SystemCollector struct {
 	collected bool
 }
 
+func NewSystemCollector() SystemCollector {
+	return SystemCollector{}
+}
+
 // GetData collects certificate and locale data and returns them as SystemFacts.
 func (c *SystemCollector) GetData(rescan bool) (SystemFacts, error) {
 	if rescan || !c.collected {

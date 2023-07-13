@@ -10,6 +10,10 @@ type AzureCollector struct {
 	collected bool
 }
 
+func NewAzureCollector() AzureCollector {
+	return AzureCollector{}
+}
+
 func (c *AzureCollector) GetData(rescan bool) (AzureFacts, error) {
 	if rescan || !c.collected {
 		c.data = AzureFacts{}

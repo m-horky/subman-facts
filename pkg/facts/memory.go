@@ -19,11 +19,9 @@ type MemoryCollector struct {
 
 func NewMemoryCollector() MemoryCollector {
 	return MemoryCollector{
-		data:      MemoryFacts{},
-		collected: false,
-		getFileOutput: func(path string) ([]string, error) {
-			return getFileOutput(path)
-		},
+		data:          MemoryFacts{},
+		collected:     false,
+		getFileOutput: getFileOutput,
 	}
 }
 

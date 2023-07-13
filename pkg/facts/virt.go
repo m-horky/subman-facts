@@ -14,8 +14,19 @@ type VirtFacts struct {
 }
 
 type VirtCollector struct {
-	data      VirtFacts
-	collected bool
+	data             VirtFacts
+	collected        bool
+	getCommandOutput func(command string, args ...string) ([]string, []string, error)
+	getFileOutput    func(path string) ([]string, error)
+}
+
+func NewVirtCollector() VirtCollector {
+	return VirtCollector{
+		data:             VirtFacts{},
+		collected:        false,
+		getCommandOutput: getCommandOutput,
+		getFileOutput:    getFileOutput,
+	}
 }
 
 // GetData collects virtualization data and returns them as VirtFacts.
@@ -48,7 +59,7 @@ func (c *VirtCollector) collect() error {
 
 // collectVirtWhat collects virtualization using /usr/sbin/virt-what.
 func (c *VirtCollector) collectVirtWhat() error {
-	output, _, err := getCommandOutput("/usr/sbin/virt-what")
+	output, _, err := c.getCommandOutput("/usr/sbin/virt-what")
 	if err != nil {
 		log.Errorf("Could not collect data from /usr/sbin/virt-what: %s", err)
 		return err
@@ -115,7 +126,7 @@ func (c *VirtCollector) collectUUID() error {
 
 // collectUUIDWithDmidecode invokes the `dmidecode` binary and parses out the UUID value
 func (c *VirtCollector) collectUUIDWithDmidecode() error {
-	output, _, err := getCommandOutput("/usr/sbin/dmidecode")
+	output, _, err := c.getCommandOutput("/usr/sbin/dmidecode")
 	if err != nil {
 		log.Errorf("Could not collect dmidecode data: %s", err)
 		return err
@@ -141,7 +152,7 @@ func (c *VirtCollector) collectUUIDFromDeviceTree() error {
 		if os.IsNotExist(err) {
 			continue
 		}
-		output, err := getFileOutput(path)
+		output, err := c.getFileOutput(path)
 		if err != nil {
 			log.Errorf("UUID file %s exists, but could not be read: %s", path, err)
 			return err
@@ -163,7 +174,7 @@ func (c *VirtCollector) collectUUIDFromDeviceTree() error {
 // `/sys/hypervisor/uuid` (used in Xen).
 func (c *VirtCollector) collectUUIDFromSys() error {
 	path := "/sys/hypervisor/uuid"
-	output, err := getFileOutput(path)
+	output, err := c.getFileOutput(path)
 	if os.IsNotExist(err) {
 		return nil
 	}
