@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func Test_collect(t *testing.T) {
+func TestMemoryCollector_collect(t *testing.T) {
 	tests := []struct {
 		description   string
 		getFileOutput func(path string) ([]string, error)

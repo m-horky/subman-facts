@@ -29,7 +29,8 @@ func CollectAll() AllFacts {
 	everything := AllFacts{}
 
 	everything.CustomFacts, _ = (&CustomCollector{}).GetData(true)
-	everything.DistributionFacts, _ = (&DistributionCollector{}).GetData(true)
+	distributionCollector := NewDistributionCollector()
+	everything.DistributionFacts, _ = distributionCollector.GetData(true)
 	everything.InsightsFacts, _ = (&InsightsCollector{}).GetData(true)
 	memoryCollector := NewMemoryCollector()
 	everything.MemoryFacts, _ = memoryCollector.GetData(true)

@@ -1,7 +1,6 @@
 package facts
 
 import (
-	"bufio"
 	"git.sr.ht/~spc/go-log"
 	"os"
 	"regexp"
@@ -16,8 +15,19 @@ type DistributionFacts struct {
 
 // DistributionCollector contains facts from /etc/os-release and /etc/redhat-release
 type DistributionCollector struct {
-	data      DistributionFacts
-	collected bool
+	data          DistributionFacts
+	collected     bool
+	getFileOutput func(string) ([]string, error)
+}
+
+func NewDistributionCollector() DistributionCollector {
+	return DistributionCollector{
+		data:      DistributionFacts{},
+		collected: false,
+		getFileOutput: func(path string) ([]string, error) {
+			return getFileOutput(path)
+		},
+	}
 }
 
 // GetData collects network interface data.
@@ -57,20 +67,17 @@ func (c *DistributionCollector) collect() error {
 
 // collectOsRelease collects values from /etc/os-release
 func (c *DistributionCollector) collectOsRelease() error {
-	f, err := os.Open("/etc/os-release")
+	lines, err := c.getFileOutput("/etc/os-release")
 	if err != nil {
-		log.Errorf("Could not open /etc/os-release: %s", err)
+		log.Errorf("Could not get output of /etc/os-release: %s", err)
 		return err
 	}
-	// remember to close the file at the end of the program
-	defer f.Close()
 
-	// read the file line by line using scanner
-	scanner := bufio.NewScanner(f)
-
-	for scanner.Scan() {
-		line := scanner.Text()
+	for _, line := range lines {
 		kv := strings.SplitN(line, "=", 2)
+		if len(kv) != 2 {
+			continue
+		}
 		key := kv[0]
 		value := strings.Trim(kv[1], "\"")
 
@@ -94,11 +101,6 @@ func (c *DistributionCollector) collectOsRelease() error {
 			//     version_modifier = vers_mod_data[5].lower().replace("\\:", ":")
 			log.Warn("CPE_NAME collection has not yet been implemented")
 		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Errorf("Could not parse /etc/os-release: %s", err)
-		return err
 	}
 	return nil
 }
