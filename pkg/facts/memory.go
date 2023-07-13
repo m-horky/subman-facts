@@ -12,8 +12,19 @@ type MemoryFacts struct {
 }
 
 type MemoryCollector struct {
-	data      MemoryFacts
-	collected bool
+	data          MemoryFacts
+	collected     bool
+	getFileOutput func(string) ([]string, error)
+}
+
+func NewMemoryCollector() MemoryCollector {
+	return MemoryCollector{
+		data:      MemoryFacts{},
+		collected: false,
+		getFileOutput: func(path string) ([]string, error) {
+			return getFileOutput(path)
+		},
+	}
 }
 
 // GetData collects memory data.
@@ -33,9 +44,9 @@ func (c *MemoryCollector) GetData(rescan bool) (MemoryFacts, error) {
 func (c *MemoryCollector) collect() error {
 	parser := regexp.MustCompile(`^(?P<key>\S*):\s*(?P<value>\d*)\s*kB`)
 
-	lines, err := getFileOutput("/proc/meminfo")
+	lines, err := c.getFileOutput("/proc/meminfo")
 	if err != nil {
-		log.Errorf("Could not get output of /proc/meminfo: %s")
+		log.Errorf("Could not get output of /proc/meminfo: %s", err)
 		return err
 	}
 	for _, line := range lines {
