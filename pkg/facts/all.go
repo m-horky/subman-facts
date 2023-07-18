@@ -9,7 +9,7 @@ import (
 )
 
 type AllFacts struct {
-	CustomFacts       CustomFacts       `json:"custom"`
+	CustomFacts       map[string]any    `json:"custom"`
 	DistributionFacts DistributionFacts `json:"distribution"`
 	InsightsFacts     InsightsFacts     `json:"insights"`
 	MemoryFacts       MemoryFacts       `json:"memory"`
