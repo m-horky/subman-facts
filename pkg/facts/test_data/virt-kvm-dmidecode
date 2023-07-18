@@ -1,0 +1,10 @@
+Handle 0x0012, DMI type 1, 27 bytes
+System Information
+	Manufacturer: REDHAT
+	Product Name: GenericLaptop
+	Version: Generic Laptop Gen 1
+	Serial Number: ABCDEFG
+	UUID: fake-uuid
+	Wake-up Type: Power Switch
+	SKU Number: REDHAT_2023 GL G1
+	Family: REDHAT GL G1

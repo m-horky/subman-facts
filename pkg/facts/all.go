@@ -17,8 +17,8 @@ type AllFacts struct {
 	SystemFacts       SystemFacts       `json:"system"`
 	UnameFacts        UnameFacts        `json:"uname"`
 	UptimeFacts       UptimeFacts       `json:"uptime"`
-	VirtFacts         VirtFacts         `json:"virt"`
 	DmidecodeFacts    *DmidecodeFacts   `json:"dmidecode,omitempty"`
+	VirtFacts         *VirtFacts        `json:"virt"`
 	KpatchFacts       *KpatchFacts      `json:"kpatch"`
 	AWSFacts          *AWSFacts         `json:"aws,omitempty"`
 	AzureFacts        *AzureFacts       `json:"azure,omitempty"`
@@ -44,14 +44,18 @@ func CollectAll() AllFacts {
 	everything.UnameFacts, _ = unameCollector.GetData(true)
 	uptimeCollector := NewUptimeCollector()
 	everything.UptimeFacts, _ = uptimeCollector.GetData(true)
-	virtCollector := NewVirtCollector()
-	everything.VirtFacts, _ = virtCollector.GetData(true)
 
-	// Following facts are only collectable with root permissions
 	dmidecodeCollector := NewDmidecodeCollector()
 	dmiFacts, err := dmidecodeCollector.GetData(true)
 	if err == nil {
 		*everything.DmidecodeFacts = dmiFacts
+	}
+	// Following facts are only collectable with root permissions
+	virtCollector := NewVirtCollector()
+	virtFacts, err := virtCollector.GetData(true)
+	if err == nil {
+		// If virt-what is not installed, do not do anything (RHBZ 768397)
+		*everything.VirtFacts = virtFacts
 	}
 
 	// Following facts are only collected when their binaries are installed

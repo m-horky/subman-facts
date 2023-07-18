@@ -46,8 +46,7 @@ func (c *VirtCollector) GetData(rescan bool) (VirtFacts, error) {
 func (c *VirtCollector) collect() error {
 	err := c.collectVirtWhat()
 	if err != nil {
-		// If virt-what is not installed, do not do anything (RHBZ 768397)
-		c.data.IsGuest = false
+		return err
 	}
 
 	if c.data.IsGuest == true {
@@ -148,11 +147,10 @@ func (c *VirtCollector) collectUUIDWithDmidecode() error {
 // such as ppc64 and ppc64le.
 func (c *VirtCollector) collectUUIDFromDeviceTree() error {
 	for _, path := range []string{"/proc/device-tree/vm,uuid", "/proc/device-tree/ibm,partition-uuid"} {
-		_, err := os.Stat(path)
+		output, err := c.getFileOutput(path)
 		if os.IsNotExist(err) {
 			continue
 		}
-		output, err := c.getFileOutput(path)
 		if err != nil {
 			log.Errorf("UUID file %s exists, but could not be read: %s", path, err)
 			return err
