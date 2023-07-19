@@ -61,6 +61,7 @@ func (c *VirtCollector) collectVirtWhat() error {
 	output, _, err := c.getCommandOutput("/usr/sbin/virt-what")
 	if err != nil {
 		log.Errorf("could not collect data from /usr/sbin/virt-what: %s", err)
+		c.data.HostType = "Unknown"
 		return err
 	}
 

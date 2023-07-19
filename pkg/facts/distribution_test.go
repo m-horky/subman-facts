@@ -9,56 +9,56 @@ func TestDistributionCollector_collect(t *testing.T) {
 	tests := []struct {
 		description   string
 		getFileOutput func(path string) ([]string, error)
-		ok            DistributionFacts
-		err           error
+		wants         DistributionFacts
+		wantsErr      error
 	}{
 		{
 			description: "Fedora 37",
 			getFileOutput: func(path string) ([]string, error) {
 				return getFileOutput("./test_data/distribution-fc37-etc-osrelease")
 			},
-			ok:  DistributionFacts{Name: "Fedora Linux", Version: "37", ID: "Workstation Edition"},
-			err: nil,
+			wants:    DistributionFacts{Name: "Fedora Linux", Version: "37", ID: "Workstation Edition"},
+			wantsErr: nil,
 		},
 		{
 			description: "CentOS 7",
 			getFileOutput: func(path string) ([]string, error) {
 				return getFileOutput("./test_data/distribution-c7-etc-osrelease")
 			},
-			ok:  DistributionFacts{Name: "CentOS Linux", Version: "7", ID: "Core"},
-			err: nil,
+			wants:    DistributionFacts{Name: "CentOS Linux", Version: "7", ID: "Core"},
+			wantsErr: nil,
 		},
 		{
 			description: "CentOS Stream 8",
 			getFileOutput: func(path string) ([]string, error) {
 				return getFileOutput("./test_data/distribution-cs8-etc-osrelease")
 			},
-			ok:  DistributionFacts{Name: "CentOS Stream", Version: "8", ID: "8"},
-			err: nil,
+			wants:    DistributionFacts{Name: "CentOS Stream", Version: "8", ID: "8"},
+			wantsErr: nil,
 		},
 		{
 			description: "CentOS Stream 9",
 			getFileOutput: func(path string) ([]string, error) {
 				return getFileOutput("./test_data/distribution-cs9-etc-osrelease")
 			},
-			ok:  DistributionFacts{Name: "CentOS Stream", Version: "9", ID: "9"},
-			err: nil,
+			wants:    DistributionFacts{Name: "CentOS Stream", Version: "9", ID: "9"},
+			wantsErr: nil,
 		},
 		{
 			description: "RHEL 8.8",
 			getFileOutput: func(path string) ([]string, error) {
 				return getFileOutput("./test_data/distribution-el88-etc-osrelease")
 			},
-			ok:  DistributionFacts{Name: "Red Hat Enterprise Linux", Version: "8.8", ID: "Ootpa"},
-			err: nil,
+			wants:    DistributionFacts{Name: "Red Hat Enterprise Linux", Version: "8.8", ID: "Ootpa"},
+			wantsErr: nil,
 		},
 		{
 			description: "RHEL 9.2",
 			getFileOutput: func(path string) ([]string, error) {
 				return getFileOutput("./test_data/distribution-el92-etc-osrelease")
 			},
-			ok:  DistributionFacts{Name: "Red Hat Enterprise Linux", Version: "9.2", ID: "Plow"},
-			err: nil,
+			wants:    DistributionFacts{Name: "Red Hat Enterprise Linux", Version: "9.2", ID: "Plow"},
+			wantsErr: nil,
 		},
 	}
 
@@ -69,21 +69,21 @@ func TestDistributionCollector_collect(t *testing.T) {
 
 			facts, err := collector.GetData(true)
 
-			if test.err == nil {
+			if test.wantsErr == nil {
 				// We expect valid results
-				if facts.Name != test.ok.Name {
-					t.Errorf("Name expected as %s, got %s", test.ok.Name, facts.Name)
+				if facts.Name != test.wants.Name {
+					t.Errorf("Name expected as %s, got %s", test.wants.Name, facts.Name)
 				}
-				if facts.Version != test.ok.Version {
-					t.Errorf("Version expected as %s, got %s", test.ok.Version, facts.Version)
+				if facts.Version != test.wants.Version {
+					t.Errorf("Version expected as %s, got %s", test.wants.Version, facts.Version)
 				}
-				if facts.ID != test.ok.ID {
-					t.Errorf("ID expected as %s, got %s", test.ok.ID, facts.ID)
+				if facts.ID != test.wants.ID {
+					t.Errorf("ID expected as %s, got %s", test.wants.ID, facts.ID)
 				}
 			} else {
 				// We expect failed results
-				if !cmp.Equal(test.err, err) {
-					t.Errorf("Error expected as %s, got %s", test.err, err)
+				if !cmp.Equal(test.wantsErr, err) {
+					t.Errorf("Error expected as %s, got %s", test.wantsErr, err)
 				}
 			}
 		})

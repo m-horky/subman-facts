@@ -14,8 +14,8 @@ func TestVirtCollector_collect(t *testing.T) {
 		getFileOutput    func(path string) ([]string, error)
 		getCommandOutput func(cmd string, args ...string) ([]string, []string, error)
 		collected        bool
-		ok               VirtFacts
-		err              error
+		wants            VirtFacts
+		wantsErr         error
 	}{
 		{
 			description: "bare metal",
@@ -26,8 +26,8 @@ func TestVirtCollector_collect(t *testing.T) {
 				return []string{}, fmt.Errorf("getFileOutput is not mocked")
 			},
 			collected: true,
-			ok:        VirtFacts{IsGuest: false, HostType: "Not Applicable", UUID: ""},
-			err:       nil,
+			wants:     VirtFacts{IsGuest: false, HostType: "Not Applicable", UUID: ""},
+			wantsErr:  nil,
 		},
 		{
 			description: "non-zero error code",
@@ -38,8 +38,8 @@ func TestVirtCollector_collect(t *testing.T) {
 				return []string{}, fmt.Errorf("getFileOutput is not mocked")
 			},
 			collected: false,
-			ok:        VirtFacts{}, // FIXME sub-man reports 'is_guest: "Unknown"'
-			err:       nil,
+			wants:     VirtFacts{}, // FIXME sub-man reports 'is_guest: "Unknown"'
+			wantsErr:  nil,
 		},
 		{
 			description: "made-up virtualization",
@@ -50,8 +50,8 @@ func TestVirtCollector_collect(t *testing.T) {
 				return []string{}, fmt.Errorf("mock is missing for path %s", path)
 			},
 			collected: true,
-			ok:        VirtFacts{IsGuest: true, HostType: "made-up", UUID: ""},
-			err:       nil,
+			wants:     VirtFacts{IsGuest: true, HostType: "made-up", UUID: ""},
+			wantsErr:  nil,
 		},
 		{
 			description: "kvm",
@@ -71,8 +71,8 @@ func TestVirtCollector_collect(t *testing.T) {
 				return []string{}, fmt.Errorf("mock is missing for path %s", path)
 			},
 			collected: true,
-			ok:        VirtFacts{IsGuest: true, HostType: "kvm", UUID: "fake-uuid"},
-			err:       nil,
+			wants:     VirtFacts{IsGuest: true, HostType: "kvm", UUID: "fake-uuid"},
+			wantsErr:  nil,
 		},
 		{
 			description: "ppc64le (vm,uuid)",
@@ -100,8 +100,8 @@ func TestVirtCollector_collect(t *testing.T) {
 				}
 			},
 			collected: true,
-			ok:        VirtFacts{IsGuest: true, HostType: "ibm_power-lpar_dedicated", UUID: "fake-uuid"},
-			err:       nil,
+			wants:     VirtFacts{IsGuest: true, HostType: "ibm_power-lpar_dedicated", UUID: "fake-uuid"},
+			wantsErr:  nil,
 		},
 		{
 			description: "ppc64le (ibm,partition-uuid)",
@@ -129,8 +129,8 @@ func TestVirtCollector_collect(t *testing.T) {
 				}
 			},
 			collected: true,
-			ok:        VirtFacts{IsGuest: true, HostType: "ibm_power-lpar_dedicated", UUID: "fake-uuid"},
-			err:       nil,
+			wants:     VirtFacts{IsGuest: true, HostType: "ibm_power-lpar_dedicated", UUID: "fake-uuid"},
+			wantsErr:  nil,
 		},
 		{
 			description: "xen",
@@ -158,8 +158,8 @@ func TestVirtCollector_collect(t *testing.T) {
 				}
 			},
 			collected: true,
-			ok:        VirtFacts{IsGuest: true, HostType: "xen", UUID: "fake-uuid"},
-			err:       nil,
+			wants:     VirtFacts{IsGuest: true, HostType: "xen", UUID: "fake-uuid"},
+			wantsErr:  nil,
 		},
 	}
 
@@ -176,21 +176,21 @@ func TestVirtCollector_collect(t *testing.T) {
 				t.FailNow()
 			}
 
-			if test.err == nil {
+			if test.wantsErr == nil {
 				// We expect valid results
-				if facts.IsGuest != test.ok.IsGuest {
-					t.Errorf("IsGuest expected as %t, got %t", test.ok.IsGuest, facts.IsGuest)
+				if facts.IsGuest != test.wants.IsGuest {
+					t.Errorf("IsGuest expected as %t, got %t", test.wants.IsGuest, facts.IsGuest)
 				}
-				if facts.HostType != test.ok.HostType {
-					t.Errorf("HostType expected as %s, got %s", test.ok.HostType, facts.HostType)
+				if facts.HostType != test.wants.HostType {
+					t.Errorf("HostType expected as %s, got %s", test.wants.HostType, facts.HostType)
 				}
-				if facts.UUID != test.ok.UUID {
-					t.Errorf("UUID expected as %s, got %s", test.ok.UUID, facts.UUID)
+				if facts.UUID != test.wants.UUID {
+					t.Errorf("UUID expected as %s, got %s", test.wants.UUID, facts.UUID)
 				}
 			} else {
 				// We expect failed results
-				if !cmp.Equal(test.err, err) {
-					t.Errorf("Error expected as %s, got %s", test.err, err)
+				if !cmp.Equal(test.wantsErr, err) {
+					t.Errorf("Error expected as %s, got %s", test.wantsErr, err)
 				}
 			}
 		})

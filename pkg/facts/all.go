@@ -8,78 +8,92 @@ import (
 	"strings"
 )
 
-type AllFacts struct {
-	CustomFacts       map[string]any    `json:"custom"`
-	DistributionFacts DistributionFacts `json:"distribution"`
-	InsightsFacts     InsightsFacts     `json:"insights"`
-	MemoryFacts       MemoryFacts       `json:"memory"`
-	NetworkFacts      NetworkFacts      `json:"network"`
-	SystemFacts       SystemFacts       `json:"system"`
-	UnameFacts        UnameFacts        `json:"uname"`
-	UptimeFacts       UptimeFacts       `json:"uptime"`
-	DmidecodeFacts    *DmidecodeFacts   `json:"dmidecode,omitempty"`
-	VirtFacts         *VirtFacts        `json:"virt"`
-	KpatchFacts       *KpatchFacts      `json:"kpatch"`
-	AWSFacts          *AWSFacts         `json:"aws,omitempty"`
-	AzureFacts        *AzureFacts       `json:"azure,omitempty"`
-	GCPFacts          *GCPFacts         `json:"gcp,omitempty"`
-}
-
-func CollectAll() AllFacts {
-	everything := AllFacts{}
+func CollectAll() map[string]any {
+	everything := make(map[string]any)
 
 	customCollector := NewCustomCollector()
-	everything.CustomFacts, _ = customCollector.GetData(true)
-	distributionCollector := NewDistributionCollector()
-	everything.DistributionFacts, _ = distributionCollector.GetData(true)
-	insightsCollector := NewInsightsCollector()
-	everything.InsightsFacts, _ = insightsCollector.GetData(true)
-	memoryCollector := NewMemoryCollector()
-	everything.MemoryFacts, _ = memoryCollector.GetData(true)
-	networkCollector := NewNetworkCollector()
-	everything.NetworkFacts, _ = networkCollector.GetData(true)
-	systemCollector := NewSystemCollector()
-	everything.SystemFacts, _ = systemCollector.GetData(true)
-	unameCollector := NewUnameCollector()
-	everything.UnameFacts, _ = unameCollector.GetData(true)
-	uptimeCollector := NewUptimeCollector()
-	everything.UptimeFacts, _ = uptimeCollector.GetData(true)
-
-	dmidecodeCollector := NewDmidecodeCollector()
-	dmiFacts, err := dmidecodeCollector.GetData(true)
+	customFacts, err := customCollector.GetData(true)
 	if err == nil {
-		*everything.DmidecodeFacts = dmiFacts
+		everything["custom"] = customFacts
 	}
+
+	distributionCollector := NewDistributionCollector()
+	distributionFacts, err := distributionCollector.GetData(true)
+	if err == nil {
+		everything["distribution"] = distributionFacts
+	}
+
+	insightsCollector := NewInsightsCollector()
+	insightsFacts, err := insightsCollector.GetData(true)
+	if err == nil {
+		everything["insights"] = insightsFacts
+	}
+
+	memoryCollector := NewMemoryCollector()
+	memoryFacts, err := memoryCollector.GetData(true)
+	if err == nil {
+		everything["memory"] = memoryFacts
+	}
+
+	networkCollector := NewNetworkCollector()
+	networkFacts, err := networkCollector.GetData(true)
+	if err == nil {
+		everything["network"] = networkFacts
+	}
+
+	systemCollector := NewSystemCollector()
+	systemFacts, err := systemCollector.GetData(true)
+	if err == nil {
+		everything["system"] = systemFacts
+	}
+
+	unameCollector := NewUnameCollector()
+	unameFacts, err := unameCollector.GetData(true)
+	if err == nil {
+		everything["uname"] = unameFacts
+	}
+
+	uptimeCollector := NewUptimeCollector()
+	uptimeFacts, err := uptimeCollector.GetData(true)
+	if err == nil {
+		everything["uptime"] = uptimeFacts
+	}
+
 	// Following facts are only collectable with root permissions
+	dmidecodeCollector := NewDmidecodeCollector()
+	dmidecodeFacts, err := dmidecodeCollector.GetData(true)
+	if err == nil {
+		everything["dmidecode"] = dmidecodeFacts
+	}
+
 	virtCollector := NewVirtCollector()
 	virtFacts, err := virtCollector.GetData(true)
 	if err == nil {
-		// If virt-what is not installed, do not do anything (RHBZ 768397)
-		*everything.VirtFacts = virtFacts
+		everything["virt"] = virtFacts
 	}
 
 	// Following facts are only collected when their binaries are installed
 	kpatchCollector := NewKpatchCollector()
 	kpatchFacts, err := kpatchCollector.GetData(true)
 	if err == nil {
-		*everything.KpatchFacts = kpatchFacts
+		everything["kpatch"] = kpatchFacts
 	}
 
 	// Following facts are only collectable in their specific cloud environments
 	awsCollector := NewAWSCollector()
 	awsFacts, err := awsCollector.GetData(true)
 	if err == nil {
-		*everything.AWSFacts = awsFacts
+		everything["aws"] = awsFacts
 	}
 	azureCollector := NewAzureCollector()
 	azureFacts, err := azureCollector.GetData(true)
 	if err == nil {
-		*everything.AzureFacts = azureFacts
+		everything["azure"] = azureFacts
 	}
 	gcpCollector := NewGCPCollector()
 	gcpFacts, err := gcpCollector.GetData(true)
 	if err == nil {
-		*everything.GCPFacts = gcpFacts
+		everything["gcp"] = gcpFacts
 	}
 
 	return everything
