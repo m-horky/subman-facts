@@ -122,13 +122,16 @@ func (c *NetworkCollector) collectIPRoute() error {
 
 	ifaces := make(map[string]NetworkInterfaceFacts, 0)
 	for _, ifaceData := range ipOutput {
-		iface := NetworkInterfaceFacts{MACAddress: ifaceData.MACAddress}
+		iface := NetworkInterfaceFacts{}
+		if ifaceData.LinkType != "loopback" {
+			iface.MACAddress = ifaceData.MACAddress
+		}
 
 		var ipv4addresses []string
 		var ipv6globalAddresses []string
 		var ipv6linkAddresses []string
 		for _, ifaceAddress := range ifaceData.Addresses {
-			if ifaceAddress.Label == "inet" {
+			if ifaceAddress.Family == "inet" {
 				ipv4addresses = append(ipv4addresses, ifaceAddress.Local)
 			}
 			if ifaceAddress.Family == "inet6" && ifaceAddress.Scope == "global" {
