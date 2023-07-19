@@ -44,7 +44,7 @@ func (c *MemoryCollector) collect() error {
 
 	lines, err := c.getFileOutput("/proc/meminfo")
 	if err != nil {
-		log.Errorf("Could not get output of /proc/meminfo: %s", err)
+		log.Errorf("could not get output of /proc/meminfo: %s", err)
 		return err
 	}
 	for _, line := range lines {
@@ -56,7 +56,7 @@ func (c *MemoryCollector) collect() error {
 		key := matches[1]
 		value, err := strconv.Atoi(matches[2])
 		if err != nil {
-			log.Errorf("Could not convert memory value: %s", line)
+			log.Errorf("could not convert memory value: %s", line)
 			continue
 		}
 

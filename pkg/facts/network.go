@@ -88,7 +88,7 @@ func (c *NetworkCollector) collect() error {
 func (c *NetworkCollector) collectHostname() error {
 	hostname, err := os.Hostname()
 	if err != nil {
-		log.Errorf("Could not collect hostname: %s", err)
+		log.Errorf("could not collect hostname: %s", err)
 		return err
 	}
 	c.data.Hostname = hostname
@@ -98,7 +98,7 @@ func (c *NetworkCollector) collectHostname() error {
 func (c *NetworkCollector) collectFQDN() error {
 	fullName, _, err := c.getCommandOutput("/usr/bin/hostname", "--fqdn")
 	if err != nil {
-		log.Errorf("Could not collect fully qualified domain name: %s", err)
+		log.Errorf("could not collect fully qualified domain name: %s", err)
 		return err
 	}
 	c.data.FQDN = fullName[0]
@@ -108,7 +108,7 @@ func (c *NetworkCollector) collectFQDN() error {
 func (c *NetworkCollector) collectIPRoute() error {
 	stdout, stderr, err := c.getCommandOutput("/usr/sbin/ip", "--json", "address")
 	if err != nil {
-		log.Errorf("Could not read output of ip: %s (%s)", err, strings.Join(stderr, "\\n"))
+		log.Errorf("could not read output of ip: %s (%s)", err, strings.Join(stderr, "\\n"))
 		return err
 	}
 	rawOutput := strings.Join(stdout, "\n")
@@ -116,7 +116,7 @@ func (c *NetworkCollector) collectIPRoute() error {
 	var ipOutput []iPRouteInterface
 	err = json.Unmarshal([]byte(rawOutput), &ipOutput)
 	if err != nil {
-		log.Errorf("Could not decode output of ip: %s", err)
+		log.Errorf("could not decode output of ip: %s", err)
 		return err
 	}
 

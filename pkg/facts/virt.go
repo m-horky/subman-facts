@@ -60,7 +60,7 @@ func (c *VirtCollector) collect() error {
 func (c *VirtCollector) collectVirtWhat() error {
 	output, _, err := c.getCommandOutput("/usr/sbin/virt-what")
 	if err != nil {
-		log.Errorf("Could not collect data from /usr/sbin/virt-what: %s", err)
+		log.Errorf("could not collect data from /usr/sbin/virt-what: %s", err)
 		return err
 	}
 
@@ -90,7 +90,7 @@ func (c *VirtCollector) collectUUID() error {
 	// Some systems should not get their UUIDs collected (RHBZ 1438085)
 	for _, hypervisor := range []string{"powervm_lx86", "xen-dom0", "ibm_systemz"} {
 		if strings.Contains(c.data.HostType, hypervisor) {
-			log.Debugf("We don't collect UUIDs for hypervisor '%s'.", hypervisor)
+			log.Debugf("we don't collect UUIDs for hypervisor '%s'.", hypervisor)
 			return nil
 		}
 	}
@@ -127,7 +127,7 @@ func (c *VirtCollector) collectUUID() error {
 func (c *VirtCollector) collectUUIDWithDmidecode() error {
 	output, _, err := c.getCommandOutput("/usr/sbin/dmidecode")
 	if err != nil {
-		log.Errorf("Could not collect dmidecode data: %s", err)
+		log.Errorf("could not collect dmidecode data: %s", err)
 		return err
 	}
 

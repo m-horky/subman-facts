@@ -237,14 +237,14 @@ func (c *DmidecodeCollector) collect() error {
 	stdout, stderr, err := getCommandOutput("/home/mhorky/.local/bin/dmidecode", "--json")
 
 	if err != nil {
-		log.Errorf("Could not collect DMI facts: %s (%s)", err, strings.Join(stderr, " \\n "))
+		log.Errorf("could not collect DMI facts: %s (%s)", err, strings.Join(stderr, " \\n "))
 		return err
 	}
 
 	var dmidecodeOutput dmidecodeData
 	err = json.Unmarshal([]byte(strings.Join(stdout, "")), &dmidecodeOutput)
 	if err != nil {
-		log.Errorf("Could not decode output of dmidecode: %s", err)
+		log.Errorf("could not decode output of dmidecode: %s", err)
 		return err
 	}
 
@@ -271,7 +271,7 @@ func (c *DmidecodeCollector) collectBaseboard(data dmidecodeData) error {
 		facts := DmidecodeBaseboardFacts{}
 		err := mapstructure.Decode(section.Values, &facts)
 		if err != nil {
-			log.Errorf("Failed to decode DMI slot facts: %s", err)
+			log.Errorf("failed to decode DMI slot facts: %s", err)
 			return err
 		}
 		c.data.Baseboard = facts
@@ -287,7 +287,7 @@ func (c *DmidecodeCollector) collectBios(data dmidecodeData) error {
 		facts := DmidecodeBiosFacts{}
 		err := mapstructure.Decode(section.Values, &facts)
 		if err != nil {
-			log.Errorf("Failed to decode DMI bios facts: %s", err)
+			log.Errorf("failed to decode DMI bios facts: %s", err)
 			return err
 		}
 		c.data.BIOS = facts
@@ -300,7 +300,7 @@ func (c *DmidecodeCollector) collectBios(data dmidecodeData) error {
 		facts := DmidecodeBiosFacts{}
 		err := mapstructure.Decode(section.Values, &facts)
 		if err != nil {
-			log.Errorf("Failed to decode DMI bios language facts: %s", err)
+			log.Errorf("failed to decode DMI bios language facts: %s", err)
 			return err
 		}
 		c.data.BIOS.LanguageDescriptionFormat = facts.LanguageDescriptionFormat
@@ -321,7 +321,7 @@ func (c *DmidecodeCollector) collectChassis(data dmidecodeData) error {
 		facts := DmidecodeChassisFacts{}
 		err := mapstructure.Decode(section.Values, &facts)
 		if err != nil {
-			log.Errorf("Failed to decode DMI system facts: %s", err)
+			log.Errorf("failed to decode DMI system facts: %s", err)
 			return err
 		}
 		c.data.Chassis = facts
@@ -337,7 +337,7 @@ func (c *DmidecodeCollector) collectConnector(data dmidecodeData) error {
 		facts := DmidecodeConnectorFacts{}
 		err := mapstructure.Decode(section.Values, &facts)
 		if err != nil {
-			log.Errorf("Failed to decode DMI system facts: %s", err)
+			log.Errorf("failed to decode DMI system facts: %s", err)
 			return err
 		}
 		c.data.Connector = facts
@@ -353,7 +353,7 @@ func (c *DmidecodeCollector) collectMemory(data dmidecodeData) error {
 		facts := DmidecodeMemoryFacts{}
 		err := mapstructure.Decode(section.Values, &facts)
 		if err != nil {
-			log.Errorf("Failed to decode DMI slot facts: %s", err)
+			log.Errorf("failed to decode DMI slot facts: %s", err)
 			return err
 		}
 		c.data.Memory = facts
@@ -366,7 +366,7 @@ func (c *DmidecodeCollector) collectMemory(data dmidecodeData) error {
 		facts := DmidecodeMemoryFacts{}
 		err := mapstructure.Decode(section.Values, &facts)
 		if err != nil {
-			log.Errorf("Failed to decode DMI slot facts: %s", err)
+			log.Errorf("failed to decode DMI slot facts: %s", err)
 			return err
 		}
 		c.data.Memory.ErrorCorrectionType = facts.ErrorCorrectionType
@@ -387,7 +387,7 @@ func (c *DmidecodeCollector) collectProcessor(data dmidecodeData) error {
 		facts := DmidecodeProcessorFacts{}
 		err := mapstructure.Decode(section.Values, &facts)
 		if err != nil {
-			log.Errorf("Failed to decode DMI system facts: %s", err)
+			log.Errorf("failed to decode DMI system facts: %s", err)
 			return err
 		}
 		c.data.Processor = facts
@@ -403,7 +403,7 @@ func (c *DmidecodeCollector) collectSlot(data dmidecodeData) error {
 		facts := DmidecodeSlotFacts{}
 		err := mapstructure.Decode(section.Values, &facts)
 		if err != nil {
-			log.Errorf("Failed to decode DMI slot facts: %s", err)
+			log.Errorf("failed to decode DMI slot facts: %s", err)
 			return err
 		}
 		c.data.Slot = facts
@@ -423,7 +423,7 @@ func (c *DmidecodeCollector) collectSystem(data dmidecodeData) error {
 		facts := DmidecodeSystemFacts{}
 		err := mapstructure.Decode(section.Values, &facts)
 		if err != nil {
-			log.Errorf("Failed to decode DMI system facts: %s", err)
+			log.Errorf("failed to decode DMI system facts: %s", err)
 			return err
 		}
 		c.data.System = facts

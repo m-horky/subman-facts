@@ -44,12 +44,12 @@ func (c *SystemCollector) collectCertificateVersion() error {
 	//  /etc/pki/consumer/)
 	// see src/rhsmlib/facts/collector.py::StaticFactsCollector
 	c.data.CertificateVersion = "3.2"
-	log.Warn("System's certificate version fact is hardcoded, consider loading it dynamically.")
+	log.Warn("system's certificate version fact is hardcoded, consider loading it dynamically.")
 	return nil
 }
 
 func (c *SystemCollector) collectDefaultLocale() error {
 	// see src/rhsmlib/facts/host_collector.py
-	log.Debug("Locale fact collection is not implemented.")
+	log.Debug("locale fact collection is not implemented.")
 	return nil
 }

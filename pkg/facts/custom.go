@@ -40,7 +40,7 @@ func (c *CustomCollector) collect() error {
 	// Custom facts can be stored as any JSON file in /etc/rhsm/facts/ directory.
 	files, err := os.ReadDir(c.directory)
 	if err != nil {
-		log.Errorf("Fact directory %s not found.", c.directory)
+		log.Errorf("fact directory %s not found.", c.directory)
 		return err
 	}
 
@@ -50,24 +50,24 @@ func (c *CustomCollector) collect() error {
 		filePath := path.Join(c.directory, file.Name())
 		fileLines, err := c.getFileOutput(filePath)
 		if err != nil {
-			log.Debugf("Could not read fact file %s", filePath)
+			log.Debugf("could not read fact file %s", filePath)
 			continue
 		}
 
 		var fileFacts map[string]any
 		err = json.Unmarshal([]byte(strings.Join(fileLines, " ")), &fileFacts)
 		if err != nil {
-			log.Warnf("Could not parse fact file %s: %s", filePath, err)
+			log.Warnf("could not parse fact file %s: %s", filePath, err)
 			continue
 		}
 
 		for k, v := range fileFacts {
 			if k == "custom" {
-				log.Warnf("Ignoring key '%s' in file %s: this fact cannot be overwritten", k, filePath)
+				log.Warnf("ignoring key '%s' in file %s: this fact cannot be overwritten", k, filePath)
 				continue
 			}
 			if val, ok := facts[k]; ok {
-				log.Warnf("Overwriting key '%s = %s' with new value '%s' from file %s", k, val, v, filePath)
+				log.Warnf("overwriting key '%s = %s' with new value '%s' from file %s", k, val, v, filePath)
 			}
 			facts[k] = v
 		}

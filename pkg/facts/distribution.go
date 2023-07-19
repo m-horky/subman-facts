@@ -67,7 +67,7 @@ func (c *DistributionCollector) collect() error {
 func (c *DistributionCollector) collectOsRelease() error {
 	lines, err := c.getFileOutput("/etc/os-release")
 	if err != nil {
-		log.Errorf("Could not get output of /etc/os-release: %s", err)
+		log.Errorf("could not get output of /etc/os-release: %s", err)
 		return err
 	}
 
