@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type iPRouteAddress struct {
+type ipRouteAddress struct {
 	Family            string `json:"family"`
 	Local             string `json:"local"`
 	PrefixLength      int    `json:"prefixlen"`
@@ -17,7 +17,7 @@ type iPRouteAddress struct {
 	PreferredLifeTime int    `json:"preferred_life_time"`
 }
 
-type iPRouteInterface struct {
+type ipRouteInterface struct {
 	IfIndex             int              `json:"ifindex"`
 	IfName              string           `json:"ifname"`
 	Flags               []string         `json:"flags"`
@@ -29,7 +29,7 @@ type iPRouteInterface struct {
 	LinkType            string           `json:"link_type"`
 	MACAddress          string           `json:"address"`
 	BroadcastMacAddress string           `json:"broadcast"`
-	Addresses           []iPRouteAddress `json:"addr_info"`
+	Addresses           []ipRouteAddress `json:"addr_info"`
 }
 
 type NetworkInterfaceFacts struct {
@@ -106,14 +106,14 @@ func (c *NetworkCollector) collectFQDN() error {
 }
 
 func (c *NetworkCollector) collectIPRoute() error {
-	stdout, stderr, err := c.getCommandOutput("/usr/sbin/ip", "--json", "address")
+	stdout, _, err := c.getCommandOutput("/usr/sbin/ip", "--json", "address")
 	if err != nil {
-		log.Errorf("could not read output of ip: %s (%s)", err, strings.Join(stderr, "\\n"))
+		log.Errorf("could not read output of ip: %s", err)
 		return err
 	}
 	rawOutput := strings.Join(stdout, "\n")
 
-	var ipOutput []iPRouteInterface
+	var ipOutput []ipRouteInterface
 	err = json.Unmarshal([]byte(rawOutput), &ipOutput)
 	if err != nil {
 		log.Errorf("could not decode output of ip: %s", err)
