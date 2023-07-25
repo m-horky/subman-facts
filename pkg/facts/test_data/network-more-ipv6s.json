@@ -1,0 +1,26 @@
+[
+  {
+    "ifname": "fake0",
+    "flags": [
+      "BROADCAST",
+      "MULTICAST",
+      "UP",
+      "LOWER_UP"
+    ],
+    "address": "00:11:22:33:44:55",
+    "addr_info": [
+      {
+        "family": "inet6",
+        "local": "2620:52:0:0:0:1:2:3",
+        "prefixlen": 64,
+        "scope": "global"
+      },
+      {
+        "family": "inet6",
+        "local": "2620:52:0:0:0:1:2:4",
+        "prefixlen": 64,
+        "scope": "global"
+      }
+    ]
+  }
+]

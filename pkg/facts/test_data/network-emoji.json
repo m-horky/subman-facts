@@ -1,0 +1,43 @@
+[
+  {
+    "ifindex": 1,
+    "ifname": "\uD83C\uDF49",
+    "flags": [
+      "BROADCAST",
+      "MULTICAST",
+      "UP",
+      "LOWER_UP"
+    ],
+    "mtu": 1500,
+    "qdisc": "noqueue",
+    "operstate": "UP",
+    "group": "default",
+    "txqlen": 1000,
+    "link_type": "ether",
+    "address": "00:11:22:33:44:55",
+    "broadcast": "ff:ff:ff:ff:ff:ff",
+    "addr_info": [
+      {
+        "family": "inet",
+        "local": "10.0.0.2",
+        "prefixlen": 22,
+        "broadcast": "10.0.0.255",
+        "scope": "global",
+        "dynamic": true,
+        "noprefixroute": true,
+        "label": "\uD83C\uDF49",
+        "valid_life_time": 6052,
+        "preferred_life_time": 6052
+      },
+      {
+        "family": "inet6",
+        "local": "fe80::1:2",
+        "prefixlen": 64,
+        "scope": "link",
+        "noprefixroute": true,
+        "valid_life_time": 4294967295,
+        "preferred_life_time": 4294967295
+      }
+    ]
+  }
+]

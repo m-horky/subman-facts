@@ -1,0 +1,28 @@
+[
+  {
+    "ifname": "fake0",
+    "flags": [
+      "BROADCAST",
+      "MULTICAST",
+      "UP",
+      "LOWER_UP"
+    ],
+    "address": "00:11:22:33:44:55",
+    "addr_info": [
+      {
+        "family": "inet",
+        "local": "10.0.1.10",
+        "prefixlen": 24,
+        "scope": "global",
+        "broadcast": "10.0.1.255"
+      },
+      {
+        "family": "inet",
+        "local": "10.0.2.247",
+        "prefixlen": 28,
+        "scope": "global",
+        "broadcast": "10.0.2.255"
+      }
+    ]
+  }
+]

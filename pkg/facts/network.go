@@ -28,12 +28,14 @@ type ipRouteInterface struct {
 	TXQLen              int              `json:"txqlen"`
 	LinkType            string           `json:"link_type"`
 	MACAddress          string           `json:"address"`
+	PermanentMACAddress string           `json:"permaddr"`
 	BroadcastMacAddress string           `json:"broadcast"`
 	Addresses           []ipRouteAddress `json:"addr_info"`
 }
 
 type NetworkInterfaceFacts struct {
 	MACAddress          string   `json:"mac_address"`
+	PermanentMACAddress string   `json:"permanent_mac_address,omitempty"`
 	IPv4Address         string   `json:"ipv4_address,omitempty"`
 	IPv4Addresses       []string `json:"ipv4_address_list,omitempty"`
 	IPv6GlobalAddress   string   `json:"ipv6_global_address,omitempty"`
@@ -124,6 +126,7 @@ func (c *NetworkCollector) collectIPRoute() error {
 	for _, ifaceData := range ipOutput {
 		iface := NetworkInterfaceFacts{}
 		iface.MACAddress = ifaceData.MACAddress
+		iface.PermanentMACAddress = ifaceData.PermanentMACAddress
 
 		var ipv4addresses []string
 		var ipv6globalAddresses []string
