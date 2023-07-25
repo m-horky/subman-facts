@@ -307,9 +307,6 @@ func (c *DmidecodeCollector) collectBios(data dmidecodeData) error {
 		c.data.BIOS.CurrentlyInstalledLanguage = facts.CurrentlyInstalledLanguage
 
 	}
-
-	// QUIRK: Address is lowercase
-	c.data.BIOS.Address = strings.ToLower(c.data.BIOS.Address)
 	return nil
 }
 
@@ -428,8 +425,5 @@ func (c *DmidecodeCollector) collectSystem(data dmidecodeData) error {
 		}
 		c.data.System = facts
 	}
-
-	// QUIRK: UUID is uppercase
-	c.data.System.UUID = strings.ToUpper(c.data.System.UUID)
 	return nil
 }

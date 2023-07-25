@@ -123,9 +123,7 @@ func (c *NetworkCollector) collectIPRoute() error {
 	ifaces := make(map[string]NetworkInterfaceFacts, 0)
 	for _, ifaceData := range ipOutput {
 		iface := NetworkInterfaceFacts{}
-		if ifaceData.LinkType != "loopback" {
-			iface.MACAddress = ifaceData.MACAddress
-		}
+		iface.MACAddress = ifaceData.MACAddress
 
 		var ipv4addresses []string
 		var ipv6globalAddresses []string

@@ -99,6 +99,20 @@ func CollectAll() map[string]any {
 	return everything
 }
 
+// CollectAllAsSubscriptionManager takes the output of CollectAll and converts it into
+// data that are compatible with subscription-manager output.
+// This includes omitting some values (MAC address of loopback interface) or transforming them
+// (system UUID).
+func CollectAllAsSubscriptionManager() map[string]any {
+	// everything := CollectAll()
+
+	// MAC of `lo` is omitted
+	// DMI's UUID is uppercase
+	// DMI's bios address is lowercase
+
+	return make(map[string]any)
+}
+
 // getCommandOutput invokes a shell program and returns the output as lines.
 func getCommandOutput(command string, args ...string) ([]string, []string, error) {
 	path, err := exec.LookPath(command)
