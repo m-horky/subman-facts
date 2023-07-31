@@ -2,8 +2,15 @@ package cloud_what
 
 import (
 	"git.sr.ht/~spc/go-log"
-	"github.com/m-horky/subman-facts/pkg/facts"
 )
+
+type CloudInstance interface {
+	GetID() string
+	systemRunsOn() bool
+	systemMaybeRunsOn() float64
+	GetMetadata()
+	GetSignature()
+}
 
 type Cloud struct {
 	// Unique cloud identifier: 'aws', 'azure', 'gcp'
@@ -34,15 +41,15 @@ type Cloud struct {
 	ServerTimeout int `json:"server_timeout"`
 }
 
-// RunsOnCloud inspects the instance of the cloud object using collected
+// SystemRunsOnCloud inspects the instance of the cloud object using collected
 // system facts and decides whether we are currently running on one of the
 // supported clouds.
-func RunsOnCloud(c Cloud, f facts.CollectedFacts) bool {
-	switch c.ID {
+func SystemRunsOnCloud(c CloudInstance) bool {
+	switch c.GetID() {
 	case "aws":
-		return runsOnCloud_AWS(c, f)
+		return c.systemRunsOn()
 	default:
-		log.Errorf("RunsOnCloud is not implemented for %s.", c.ID)
+		log.Errorf("RunsOnCloud is not implemented for %s.", c.GetID())
 		return false
 	}
 }

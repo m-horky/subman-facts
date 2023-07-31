@@ -3,6 +3,7 @@ package facts
 import (
 	"bytes"
 	"fmt"
+	"git.sr.ht/~spc/go-log"
 	"os"
 	"os/exec"
 	"strings"
@@ -148,4 +149,29 @@ func getFileOutput(path string) ([]string, error) {
 	}
 	result := strings.Split(string(rawOutput), "\n")
 	return result, nil
+}
+
+// TODO Probably move to internal
+
+// Flatten takes in a nested map and returns it as a '.'-joined key-value map.
+func Flatten(mappings map[string]any) map[string]string {
+	result := make(map[string]string)
+
+	for key, value := range mappings {
+		switch value.(type) {
+		case string:
+			result[key] = value.(string)
+		case int:
+			result[key] = fmt.Sprintf("%d", value.(int))
+		case float64:
+			result[key] = fmt.Sprintf("%f", value.(float64))
+		case map[string]any:
+			for k, v := range Flatten(value.(map[string]any)) {
+				result[fmt.Sprintf("%s.%s", key, k)] = fmt.Sprintf("%v", v)
+			}
+		default:
+			log.Debugf("cannot flatten %#v=%#v", key, value)
+		}
+	}
+	return result
 }
