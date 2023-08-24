@@ -1,12 +1,16 @@
 package cloud_what
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"git.sr.ht/~spc/go-log"
 	"github.com/m-horky/subman-facts/pkg/facts"
 	"github.com/nqd/flat"
+	"io"
+	"net/http"
 	"strings"
+	"time"
 )
 
 type AWSInstance struct {
@@ -169,19 +173,87 @@ func (_ AWSInstance) flattenDmiFacts(facts facts.DmidecodeFacts) (map[string]any
 	return flattened, err
 }
 
-// getToken obtains the token from TokenURL and follows the scheme described
+type awsToken struct {
+	cachedData map[string]any
+	cachedAt   uint
+	cacheTTL   uint
+}
+
+// getToken obtains the token from a cache or from the TokenURL and follows the scheme described
 // in https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html.
 // When the token is received from the server, it is cached locally in a file.
-func (i AWSInstance) getToken() {
-	log.Debugf("trying to get AWS token from %s", i.TokenURL)
+func (i AWSInstance) getToken() (awsToken, error) {
+	token, err := i.getTokenFromFileCache()
+	if err == nil {
+		log.Debugf("using token from the cache file")
+		return token, nil
+	}
+
+	return i.getTokenFromServer()
 }
 
-func (i AWSInstance) getTokenFromServer() {
-
+// getTokenFromFileCache tries to read the cache file and return cached token.
+// An error is returned when no cache file exists or when the token is not valid anymore.
+func (i AWSInstance) getTokenFromFileCache() (awsToken, error) {
+	// TODO Read from `i.TokenCacheFile`
+	log.Warn("Cache file is not implemented.")
+	return awsToken{}, fmt.Errorf("getTokenFromFileCache(): Not implemented")
 }
 
-func (i AWSInstance) getTokenFromCache() {
+// saveTokenToFileCache saves the token into a file. It can be retrieved later using
+// getTokenFromFileCache.
+func (i AWSInstance) saveTokenToFileCache(token awsToken) error {
+	// TODO Save to `i.TokenCacheFile`
+	log.Warn("Cache file is not implemented.")
+	return nil
+}
 
+// getTokenFromServer fetches the token from the server and saves it into a cache file.
+func (i AWSInstance) getTokenFromServer() (awsToken, error) {
+	log.Debugf("requesting AWS token from %s", i.TokenURL)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(i.ServerTimeout)*time.Second)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, i.TokenURL, nil)
+	if err != nil {
+		return awsToken{}, err
+	}
+
+	// TODO Support for proxy goes here using &http.Transport{}
+	client := &http.Client{}
+	for k, v := range i.CustomHTTPHeaders {
+		req.Header.Add(k, v)
+	}
+
+	resp, err := client.Do(req)
+	defer resp.Body.Close()
+
+	if err != nil {
+		log.Errorf("unable to receive the token from AWS: %w", err)
+		return awsToken{}, err
+	}
+
+	if resp.StatusCode != 200 {
+		log.Errorf("unable to receive the token from AWS, got status code %d", resp.StatusCode)
+		return awsToken{}, fmt.Errorf("server responded with status code %d", resp.StatusCode)
+	}
+
+	response, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Errorf("unable to read the token from AWS: %w", err)
+		return awsToken{}, err
+	}
+
+	var token awsToken
+	err = json.Unmarshal(response, &token)
+	if err != nil {
+		log.Errorf("could not decode AWS token content: %s", err)
+		return awsToken{}, err
+	}
+
+	_ = i.saveTokenToFileCache(token)
+	return token, nil
 }
 
 // GetMetadata returns the metadata obtained from IMDS server.
