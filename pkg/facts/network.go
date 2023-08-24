@@ -52,16 +52,14 @@ type NetworkFacts struct {
 
 // NetworkCollector contains facts from 'Network'
 type NetworkCollector struct {
-	data             NetworkFacts
-	collected        bool
-	getCommandOutput func(command string, args ...string) ([]string, []string, error)
+	data      NetworkFacts
+	collected bool
 }
 
 func NewNetworkCollector() NetworkCollector {
 	return NetworkCollector{
-		data:             NetworkFacts{},
-		collected:        false,
-		getCommandOutput: getCommandOutput,
+		data:      NetworkFacts{},
+		collected: false,
 	}
 }
 
@@ -98,7 +96,7 @@ func (c *NetworkCollector) collectHostname() error {
 }
 
 func (c *NetworkCollector) collectFQDN() error {
-	fullName, _, err := c.getCommandOutput("/usr/bin/hostname", "--fqdn")
+	fullName, _, err := OS.Run("/usr/bin/hostname", "--fqdn")
 	if err != nil {
 		log.Errorf("could not collect fully qualified domain name: %s", err)
 		return err
@@ -108,7 +106,7 @@ func (c *NetworkCollector) collectFQDN() error {
 }
 
 func (c *NetworkCollector) collectIPRoute() error {
-	stdout, _, err := c.getCommandOutput("/usr/sbin/ip", "--json", "address")
+	stdout, _, err := OS.Run("/usr/sbin/ip", "--json", "address")
 	if err != nil {
 		log.Errorf("could not read output of ip: %s", err)
 		return err

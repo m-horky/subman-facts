@@ -9,14 +9,14 @@ import (
 
 func TestNetworkCollector_collectIPRoute(t *testing.T) {
 	tests := []struct {
-		description      string
-		getCommandOutput func(cmd string, args ...string) ([]string, []string, error)
-		wants            map[string]NetworkInterfaceFacts
-		wantsErr         error
+		description string
+		run         func(cmd string, args ...string) ([]string, []string, error)
+		wants       map[string]NetworkInterfaceFacts
+		wantsErr    error
 	}{
 		{
 			description: "no iproute",
-			getCommandOutput: func(cmd string, args ...string) ([]string, []string, error) {
+			run: func(cmd string, args ...string) ([]string, []string, error) {
 				fullCmd := strings.TrimRight(fmt.Sprintf("%s %s", cmd, strings.Join(args, " ")), " ")
 				switch fullCmd {
 				case "/usr/sbin/ip --json address":
@@ -30,7 +30,7 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 		},
 		{
 			description: "empty",
-			getCommandOutput: func(cmd string, args ...string) ([]string, []string, error) {
+			run: func(cmd string, args ...string) ([]string, []string, error) {
 				fullCmd := strings.TrimRight(fmt.Sprintf("%s %s", cmd, strings.Join(args, " ")), " ")
 				switch fullCmd {
 				case "/usr/sbin/ip --json address":
@@ -44,11 +44,11 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 		},
 		{
 			description: "only loopback",
-			getCommandOutput: func(cmd string, args ...string) ([]string, []string, error) {
+			run: func(cmd string, args ...string) ([]string, []string, error) {
 				fullCmd := strings.TrimRight(fmt.Sprintf("%s %s", cmd, strings.Join(args, " ")), " ")
 				switch fullCmd {
 				case "/usr/sbin/ip --json address":
-					lines, _ := getFileOutput("./test_data/network-loopback.json")
+					lines, _ := read("./test_data/network-loopback.json")
 					return lines, []string{}, nil
 				default:
 					return []string{}, []string{}, fmt.Errorf("mock is missing for cmd %s", fullCmd)
@@ -65,11 +65,11 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 		},
 		{
 			description: "more IPv4 addresses on one interface",
-			getCommandOutput: func(cmd string, args ...string) ([]string, []string, error) {
+			run: func(cmd string, args ...string) ([]string, []string, error) {
 				fullCmd := strings.TrimRight(fmt.Sprintf("%s %s", cmd, strings.Join(args, " ")), " ")
 				switch fullCmd {
 				case "/usr/sbin/ip --json address":
-					lines, _ := getFileOutput("./test_data/network-more-ipv4s.json")
+					lines, _ := read("./test_data/network-more-ipv4s.json")
 					return lines, []string{}, nil
 				default:
 					return []string{}, []string{}, fmt.Errorf("mock is missing for cmd %s", fullCmd)
@@ -86,11 +86,11 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 		},
 		{
 			description: "more IPv6 addresses on one interface",
-			getCommandOutput: func(cmd string, args ...string) ([]string, []string, error) {
+			run: func(cmd string, args ...string) ([]string, []string, error) {
 				fullCmd := strings.TrimRight(fmt.Sprintf("%s %s", cmd, strings.Join(args, " ")), " ")
 				switch fullCmd {
 				case "/usr/sbin/ip --json address":
-					lines, _ := getFileOutput("./test_data/network-more-ipv6s.json")
+					lines, _ := read("./test_data/network-more-ipv6s.json")
 					return lines, []string{}, nil
 				default:
 					return []string{}, []string{}, fmt.Errorf("mock is missing for cmd %s", fullCmd)
@@ -107,11 +107,11 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 		},
 		{
 			description: "system with no internet connection",
-			getCommandOutput: func(cmd string, args ...string) ([]string, []string, error) {
+			run: func(cmd string, args ...string) ([]string, []string, error) {
 				fullCmd := strings.TrimRight(fmt.Sprintf("%s %s", cmd, strings.Join(args, " ")), " ")
 				switch fullCmd {
 				case "/usr/sbin/ip --json address":
-					lines, _ := getFileOutput("./test_data/network-no-connection.json")
+					lines, _ := read("./test_data/network-no-connection.json")
 					return lines, []string{}, nil
 				default:
 					return []string{}, []string{}, fmt.Errorf("mock is missing for cmd %s", fullCmd)
@@ -128,11 +128,11 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 		},
 		{
 			description: "system with 🍉 emoji as an interface name",
-			getCommandOutput: func(cmd string, args ...string) ([]string, []string, error) {
+			run: func(cmd string, args ...string) ([]string, []string, error) {
 				fullCmd := strings.TrimRight(fmt.Sprintf("%s %s", cmd, strings.Join(args, " ")), " ")
 				switch fullCmd {
 				case "/usr/sbin/ip --json address":
-					lines, _ := getFileOutput("./test_data/network-emoji.json")
+					lines, _ := read("./test_data/network-emoji.json")
 					return lines, []string{}, nil
 				default:
 					return []string{}, []string{}, fmt.Errorf("mock is missing for cmd %s", fullCmd)
@@ -151,11 +151,11 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 		},
 		{
 			description: "laptop data",
-			getCommandOutput: func(cmd string, args ...string) ([]string, []string, error) {
+			run: func(cmd string, args ...string) ([]string, []string, error) {
 				fullCmd := strings.TrimRight(fmt.Sprintf("%s %s", cmd, strings.Join(args, " ")), " ")
 				switch fullCmd {
 				case "/usr/sbin/ip --json address":
-					lines, _ := getFileOutput("./test_data/network-laptop.json")
+					lines, _ := read("./test_data/network-laptop.json")
 					return lines, []string{}, nil
 				default:
 					return []string{}, []string{}, fmt.Errorf("mock is missing for cmd %s", fullCmd)
@@ -195,11 +195,11 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 		},
 		{
 			description: "bonding of two interfaces",
-			getCommandOutput: func(cmd string, args ...string) ([]string, []string, error) {
+			run: func(cmd string, args ...string) ([]string, []string, error) {
 				fullCmd := strings.TrimRight(fmt.Sprintf("%s %s", cmd, strings.Join(args, " ")), " ")
 				switch fullCmd {
 				case "/usr/sbin/ip --json address":
-					lines, _ := getFileOutput("./test_data/network-bonding.json")
+					lines, _ := read("./test_data/network-bonding.json")
 					return lines, []string{}, nil
 				default:
 					return []string{}, []string{}, fmt.Errorf("mock is missing for cmd %s", fullCmd)
@@ -233,11 +233,11 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 		},
 		{
 			description: "teaming of two interfaces",
-			getCommandOutput: func(cmd string, args ...string) ([]string, []string, error) {
+			run: func(cmd string, args ...string) ([]string, []string, error) {
 				fullCmd := strings.TrimRight(fmt.Sprintf("%s %s", cmd, strings.Join(args, " ")), " ")
 				switch fullCmd {
 				case "/usr/sbin/ip --json address":
-					lines, _ := getFileOutput("./test_data/network-teaming.json")
+					lines, _ := read("./test_data/network-teaming.json")
 					return lines, []string{}, nil
 				default:
 					return []string{}, []string{}, fmt.Errorf("mock is missing for cmd %s", fullCmd)
@@ -282,9 +282,9 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.description, func(t *testing.T) {
-			collector := NewNetworkCollector()
-			collector.getCommandOutput = test.getCommandOutput
+			OS.Run = test.run
 
+			collector := NewNetworkCollector()
 			err := collector.collectIPRoute()
 			interfaces := collector.data.Interfaces
 

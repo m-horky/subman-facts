@@ -7,15 +7,15 @@ import (
 
 func TestMemoryCollector_collect(t *testing.T) {
 	tests := []struct {
-		description   string
-		getFileOutput func(path string) ([]string, error)
-		collected     bool
-		ok            MemoryFacts
-		err           error
+		description string
+		read        func(path string) ([]string, error)
+		collected   bool
+		ok          MemoryFacts
+		err         error
 	}{
 		{
 			description: "simplified input",
-			getFileOutput: func(path string) ([]string, error) {
+			read: func(path string) ([]string, error) {
 				return []string{"MemTotal:   4096 kB", "SwapTotal:   2048 kB"}, nil
 			},
 			collected: true,
@@ -24,8 +24,8 @@ func TestMemoryCollector_collect(t *testing.T) {
 		},
 		{
 			description: "real life input",
-			getFileOutput: func(path string) ([]string, error) {
-				return getFileOutput("./test_data/memory-laptop")
+			read: func(path string) ([]string, error) {
+				return read("./test_data/memory-laptop")
 			},
 			collected: true,
 			ok:        MemoryFacts{MemTotal: 32604020, SwapTotal: 8388604},
@@ -36,7 +36,7 @@ func TestMemoryCollector_collect(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.description, func(t *testing.T) {
 			collector := NewMemoryCollector()
-			collector.getFileOutput = test.getFileOutput
+			OS.Read = test.read
 
 			facts, err := collector.GetData(true)
 

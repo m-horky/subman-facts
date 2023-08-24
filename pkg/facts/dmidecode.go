@@ -206,16 +206,14 @@ type DmidecodeFacts struct {
 }
 
 type DmidecodeCollector struct {
-	data             DmidecodeFacts
-	collected        bool
-	getCommandOutput func(command string, args ...string) ([]string, []string, error)
+	data      DmidecodeFacts
+	collected bool
 }
 
 func NewDmidecodeCollector() DmidecodeCollector {
 	return DmidecodeCollector{
-		data:             DmidecodeFacts{},
-		collected:        false,
-		getCommandOutput: getCommandOutput,
+		data:      DmidecodeFacts{},
+		collected: false,
 	}
 }
 
@@ -234,7 +232,7 @@ func (c *DmidecodeCollector) GetData(rescan bool) (DmidecodeFacts, error) {
 func (c *DmidecodeCollector) collect() error {
 	// NOTE this requires a patched dmidecode capable of JSON output:
 	//  https://github.com/jirihnidek/dmidecode/tree/json-c
-	stdout, stderr, err := getCommandOutput("/home/mhorky/.local/bin/dmidecode", "--json")
+	stdout, stderr, err := OS.Run("/home/mhorky/.local/bin/dmidecode", "--json")
 
 	if err != nil {
 		log.Errorf("could not collect DMI facts: %s (%s)", err, strings.Join(stderr, " \\n "))

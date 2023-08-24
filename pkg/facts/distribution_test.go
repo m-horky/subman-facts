@@ -7,55 +7,55 @@ import (
 
 func TestDistributionCollector_collect(t *testing.T) {
 	tests := []struct {
-		description   string
-		getFileOutput func(path string) ([]string, error)
-		wants         DistributionFacts
-		wantsErr      error
+		description string
+		read        func(path string) ([]string, error)
+		wants       DistributionFacts
+		wantsErr    error
 	}{
 		{
 			description: "Fedora 37",
-			getFileOutput: func(path string) ([]string, error) {
-				return getFileOutput("./test_data/distribution-fc37-etc-osrelease")
+			read: func(path string) ([]string, error) {
+				return read("./test_data/distribution-fc37-etc-osrelease")
 			},
 			wants:    DistributionFacts{Name: "Fedora Linux", Version: "37", ID: "Workstation Edition"},
 			wantsErr: nil,
 		},
 		{
 			description: "CentOS 7",
-			getFileOutput: func(path string) ([]string, error) {
-				return getFileOutput("./test_data/distribution-c7-etc-osrelease")
+			read: func(path string) ([]string, error) {
+				return read("./test_data/distribution-c7-etc-osrelease")
 			},
 			wants:    DistributionFacts{Name: "CentOS Linux", Version: "7", ID: "Core"},
 			wantsErr: nil,
 		},
 		{
 			description: "CentOS Stream 8",
-			getFileOutput: func(path string) ([]string, error) {
-				return getFileOutput("./test_data/distribution-cs8-etc-osrelease")
+			read: func(path string) ([]string, error) {
+				return read("./test_data/distribution-cs8-etc-osrelease")
 			},
 			wants:    DistributionFacts{Name: "CentOS Stream", Version: "8", ID: "8"},
 			wantsErr: nil,
 		},
 		{
 			description: "CentOS Stream 9",
-			getFileOutput: func(path string) ([]string, error) {
-				return getFileOutput("./test_data/distribution-cs9-etc-osrelease")
+			read: func(path string) ([]string, error) {
+				return read("./test_data/distribution-cs9-etc-osrelease")
 			},
 			wants:    DistributionFacts{Name: "CentOS Stream", Version: "9", ID: "9"},
 			wantsErr: nil,
 		},
 		{
 			description: "RHEL 8.8",
-			getFileOutput: func(path string) ([]string, error) {
-				return getFileOutput("./test_data/distribution-el88-etc-osrelease")
+			read: func(path string) ([]string, error) {
+				return read("./test_data/distribution-el88-etc-osrelease")
 			},
 			wants:    DistributionFacts{Name: "Red Hat Enterprise Linux", Version: "8.8", ID: "Ootpa"},
 			wantsErr: nil,
 		},
 		{
 			description: "RHEL 9.2",
-			getFileOutput: func(path string) ([]string, error) {
-				return getFileOutput("./test_data/distribution-el92-etc-osrelease")
+			read: func(path string) ([]string, error) {
+				return read("./test_data/distribution-el92-etc-osrelease")
 			},
 			wants:    DistributionFacts{Name: "Red Hat Enterprise Linux", Version: "9.2", ID: "Plow"},
 			wantsErr: nil,
@@ -64,9 +64,9 @@ func TestDistributionCollector_collect(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.description, func(t *testing.T) {
-			collector := NewDistributionCollector()
-			collector.getFileOutput = test.getFileOutput
+			OS.Read = test.read
 
+			collector := NewDistributionCollector()
 			facts, err := collector.GetData(true)
 
 			if test.wantsErr == nil {

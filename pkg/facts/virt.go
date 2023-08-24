@@ -14,18 +14,14 @@ type VirtFacts struct {
 }
 
 type VirtCollector struct {
-	data             VirtFacts
-	collected        bool
-	getCommandOutput func(command string, args ...string) ([]string, []string, error)
-	getFileOutput    func(path string) ([]string, error)
+	data      VirtFacts
+	collected bool
 }
 
 func NewVirtCollector() VirtCollector {
 	return VirtCollector{
-		data:             VirtFacts{},
-		collected:        false,
-		getCommandOutput: getCommandOutput,
-		getFileOutput:    getFileOutput,
+		data:      VirtFacts{},
+		collected: false,
 	}
 }
 
@@ -58,7 +54,7 @@ func (c *VirtCollector) collect() error {
 
 // collectVirtWhat collects virtualization using /usr/sbin/virt-what.
 func (c *VirtCollector) collectVirtWhat() error {
-	output, _, err := c.getCommandOutput("/usr/sbin/virt-what")
+	output, _, err := OS.Run("/usr/sbin/virt-what")
 	if err != nil {
 		log.Errorf("could not collect data from /usr/sbin/virt-what: %s", err)
 		c.data.HostType = "Unknown"
@@ -126,7 +122,7 @@ func (c *VirtCollector) collectUUID() error {
 
 // collectUUIDWithDmidecode invokes the `dmidecode` binary and parses out the UUID value
 func (c *VirtCollector) collectUUIDWithDmidecode() error {
-	output, _, err := c.getCommandOutput("/usr/sbin/dmidecode")
+	output, _, err := OS.Run("/usr/sbin/dmidecode")
 	if err != nil {
 		log.Errorf("could not collect dmidecode data: %s", err)
 		return err
@@ -148,7 +144,7 @@ func (c *VirtCollector) collectUUIDWithDmidecode() error {
 // such as ppc64 and ppc64le.
 func (c *VirtCollector) collectUUIDFromDeviceTree() error {
 	for _, path := range []string{"/proc/device-tree/vm,uuid", "/proc/device-tree/ibm,partition-uuid"} {
-		output, err := c.getFileOutput(path)
+		output, err := OS.Read(path)
 		if os.IsNotExist(err) {
 			continue
 		}
@@ -173,7 +169,7 @@ func (c *VirtCollector) collectUUIDFromDeviceTree() error {
 // `/sys/hypervisor/uuid` (used in Xen).
 func (c *VirtCollector) collectUUIDFromSys() error {
 	path := "/sys/hypervisor/uuid"
-	output, err := c.getFileOutput(path)
+	output, err := OS.Read(path)
 	if os.IsNotExist(err) {
 		return nil
 	}

@@ -15,16 +15,14 @@ type DistributionFacts struct {
 
 // DistributionCollector contains facts from /etc/os-release and /etc/redhat-release
 type DistributionCollector struct {
-	data          DistributionFacts
-	collected     bool
-	getFileOutput func(string) ([]string, error)
+	data      DistributionFacts
+	collected bool
 }
 
 func NewDistributionCollector() DistributionCollector {
 	return DistributionCollector{
-		data:          DistributionFacts{},
-		collected:     false,
-		getFileOutput: getFileOutput,
+		data:      DistributionFacts{},
+		collected: false,
 	}
 }
 
@@ -65,7 +63,7 @@ func (c *DistributionCollector) collect() error {
 
 // collectOsRelease collects values from /etc/os-release
 func (c *DistributionCollector) collectOsRelease() error {
-	lines, err := c.getFileOutput("/etc/os-release")
+	lines, err := OS.Read("/etc/os-release")
 	if err != nil {
 		log.Errorf("could not get output of /etc/os-release: %s", err)
 		return err

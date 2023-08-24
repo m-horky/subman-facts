@@ -9,18 +9,16 @@ import (
 )
 
 type CustomCollector struct {
-	data          map[string]any
-	collected     bool
-	directory     string
-	getFileOutput func(path string) ([]string, error)
+	data      map[string]any
+	collected bool
+	directory string
 }
 
 func NewCustomCollector() CustomCollector {
 	return CustomCollector{
-		data:          make(map[string]any),
-		collected:     false,
-		directory:     "/etc/rhsm/facts/",
-		getFileOutput: getFileOutput,
+		data:      make(map[string]any),
+		collected: false,
+		directory: "/etc/rhsm/facts/",
 	}
 }
 
@@ -48,7 +46,7 @@ func (c *CustomCollector) collect() error {
 
 	for _, file := range files {
 		filePath := path.Join(c.directory, file.Name())
-		fileLines, err := c.getFileOutput(filePath)
+		fileLines, err := OS.Read(filePath)
 		if err != nil {
 			log.Debugf("could not read fact file %s", filePath)
 			continue

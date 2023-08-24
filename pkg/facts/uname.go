@@ -14,16 +14,14 @@ type UnameFacts struct {
 
 // UnameCollector contains facts from 'uname'
 type UnameCollector struct {
-	data             UnameFacts
-	collected        bool
-	getCommandOutput func(command string, args ...string) ([]string, []string, error)
+	data      UnameFacts
+	collected bool
 }
 
 func NewUnameCollector() UnameCollector {
 	return UnameCollector{
-		data:             UnameFacts{},
-		collected:        false,
-		getCommandOutput: getCommandOutput,
+		data:      UnameFacts{},
+		collected: false,
 	}
 }
 
@@ -42,35 +40,35 @@ func (c *UnameCollector) GetData(rescan bool) (UnameFacts, error) {
 
 // collect starts the actual fact collection. It is usually invoked by GetData.
 func (c *UnameCollector) collect() error {
-	stdout, _, err := c.getCommandOutput("/usr/bin/uname", "--kernel-name")
+	stdout, _, err := OS.Run("/usr/bin/uname", "--kernel-name")
 	if err != nil {
 		log.Errorf("could not read /usr/bin/uname --kernel-name: %s", err)
 	} else {
 		c.data.Sysname = stdout[0]
 	}
 
-	stdout, _, err = c.getCommandOutput("/usr/bin/uname", "--machine")
+	stdout, _, err = OS.Run("/usr/bin/uname", "--machine")
 	if err != nil {
 		log.Errorf("could not read /usr/bin/uname --machine: %s", err)
 	} else {
 		c.data.Machine = stdout[0]
 	}
 
-	stdout, _, err = c.getCommandOutput("/usr/bin/uname", "--nodename")
+	stdout, _, err = OS.Run("/usr/bin/uname", "--nodename")
 	if err != nil {
 		log.Errorf("could not read /usr/bin/uname --nodename: %s", err)
 	} else {
 		c.data.Nodename = stdout[0]
 	}
 
-	stdout, _, err = c.getCommandOutput("/usr/bin/uname", "--kernel-release")
+	stdout, _, err = OS.Run("/usr/bin/uname", "--kernel-release")
 	if err != nil {
 		log.Errorf("could not read /usr/bin/uname --kernel-release: %s", err)
 	} else {
 		c.data.KernelRelease = stdout[0]
 	}
 
-	stdout, _, err = c.getCommandOutput("/usr/bin/uname", "--kernel-version")
+	stdout, _, err = OS.Run("/usr/bin/uname", "--kernel-version")
 	if err != nil {
 		log.Errorf("could not read /usr/bin/uname --kernel-version: %s", err)
 	} else {
