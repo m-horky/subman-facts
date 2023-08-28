@@ -2,6 +2,7 @@ package cloud_what
 
 import (
 	"git.sr.ht/~spc/go-log"
+	"net/http"
 )
 
 type CloudInstance interface {
@@ -43,7 +44,7 @@ type Cloud struct {
 
 // SystemRunsOnCloud inspects the instance of the cloud object using collected
 // system facts and decides whether we are currently running on one of the
-// supported clouds.
+// supported cloud providers.
 func SystemRunsOnCloud(c CloudInstance) bool {
 	switch c.GetID() {
 	case "aws":
@@ -52,4 +53,32 @@ func SystemRunsOnCloud(c CloudInstance) bool {
 		log.Errorf("RunsOnCloud is not implemented for %s.", c.GetID())
 		return false
 	}
+}
+
+// SystemMaybeRunsOnCloud inspects the instance of the cloud object using collected
+// system facts and decides whether we are likely running on one of the
+// supported cloud providers.
+func SystemMaybeRunsOnCloud(c CloudInstance) float64 {
+	switch c.GetID() {
+	case "aws":
+		return c.systemMaybeRunsOn()
+	default:
+		log.Errorf("SystemMaybeRunsOnCloud is not implemented for %s.", c.GetID())
+		return 0.0
+	}
+}
+
+// RemoteService is a wrapper around network calls.
+type RemoteService struct {
+	// Get performs a GET request using supplied 'client' to the 'request' remote.
+	Call func(client *http.Client, request *http.Request) (*http.Response, error)
+}
+
+// IdentityService is an instance of RemoteService structure. It directly calls http.* functions.
+// Those functions are overwritten by unit tests, allowing us to mock results.
+var IdentityService = RemoteService{Call: call}
+
+// call performs a network request using method specified in request.
+func call(client *http.Client, request *http.Request) (*http.Response, error) {
+	return client.Do(request)
 }

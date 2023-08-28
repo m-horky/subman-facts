@@ -1,11 +1,6 @@
 # `cloud-what`
 
 The goal of `cloud-what` is to identify cloud providers: AWS, GCP or Azure.
-The tasks this tool does can be split into several parts:
-
-- cloud detection,
-- self-identification,
-- fact provider.
 
 
 ## Code structure

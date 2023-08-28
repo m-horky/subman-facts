@@ -215,22 +215,23 @@ func (i AWSInstance) getTokenFromServer() (awsToken, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(i.ServerTimeout)*time.Second)
 	defer cancel()
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, i.TokenURL, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPut, i.TokenURL, nil)
 	if err != nil {
 		return awsToken{}, err
 	}
 
-	// TODO Support for proxy goes here using &http.Transport{}
-	client := &http.Client{}
+	// TODO Proxy settings need to be configured through the Transport here
+	tr := &http.Transport{}
+	client := &http.Client{Transport: tr}
 	for k, v := range i.CustomHTTPHeaders {
 		req.Header.Add(k, v)
 	}
 
-	resp, err := client.Do(req)
+	resp, err := IdentityService.Call(client, req)
 	defer resp.Body.Close()
 
 	if err != nil {
-		log.Errorf("unable to receive the token from AWS: %w", err)
+		log.Errorf("unable to receive the token from AWS: %s", err)
 		return awsToken{}, err
 	}
 
@@ -241,7 +242,7 @@ func (i AWSInstance) getTokenFromServer() (awsToken, error) {
 
 	response, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Errorf("unable to read the token from AWS: %w", err)
+		log.Errorf("unable to read the token from AWS: %s", err)
 		return awsToken{}, err
 	}
 
