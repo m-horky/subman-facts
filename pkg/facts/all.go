@@ -114,8 +114,15 @@ func CollectAllAsSubscriptionManager() map[string]any {
 	return make(map[string]any)
 }
 
-// getCommandOutput invokes a shell program and returns the output as lines.
-func getCommandOutput(command string, args ...string) ([]string, []string, error) {
+type OperatingSystem struct {
+	Run  func(command string, args ...string) ([]string, []string, error)
+	Read func(string) ([]string, error)
+}
+
+var OS = OperatingSystem{Run: run, Read: read}
+
+// run invokes a shell program and returns the output as lines.
+func run(command string, args ...string) ([]string, []string, error) {
 	path, err := exec.LookPath(command)
 	if err != nil {
 		return []string{}, []string{}, err
@@ -141,8 +148,8 @@ func getCommandOutput(command string, args ...string) ([]string, []string, error
 	return stdout, stderr, nil
 }
 
-// getFileOutput reads a file and returns the lines.
-func getFileOutput(path string) ([]string, error) {
+// read reads a file and returns the lines.
+func read(path string) ([]string, error) {
 	rawOutput, err := os.ReadFile(path)
 	if err != nil {
 		return make([]string, 0), err
