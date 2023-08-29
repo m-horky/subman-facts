@@ -295,7 +295,7 @@ func TestNetworkCollector_collectIPRoute(t *testing.T) {
 				}
 			} else {
 				// We expect failed results
-				if !cmp.Equal(test.wantsErr, err) {
+				if !cmp.Equal(test.wantsErr.Error(), err.Error()) {
 					t.Errorf("Error expected as %s, got %s", test.wantsErr, err)
 				}
 			}
