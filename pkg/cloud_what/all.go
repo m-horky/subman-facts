@@ -7,13 +7,14 @@ import (
 
 type CloudInstance interface {
 	GetID() string
-	systemRunsOn() bool
-	systemMaybeRunsOn() float64
-	GetMetadata()
-	GetSignature()
+	SystemRunsOn() bool
+	SystemMaybeRunsOn() float64
+	getToken() string
+	GetMetadata() any
+	GetSignature() any
 }
 
-type Cloud struct {
+type CloudConfiguration struct {
 	// Unique cloud identifier: 'aws', 'azure', 'gcp'
 	ID string `json:"id"`
 	// Server providing metadata: 'http://192.0.2.1/path/to/document'
@@ -22,6 +23,8 @@ type Cloud struct {
 	MetadataType string `json:"metadata_type"`
 	// Filesystem path: '/var/lib/cloud-what/cache/mycloud-metadata.json'
 	MetadataCacheFile string `json:"metadata_cache_file"`
+	// Memory cache validity, in seconds
+	MetadataCacheTTL uint `json:"memory_cache_ttl"`
 	// Server providing metadata signature: 'http://192.0.2.1/path/to/signature'
 	SignatureUrl string `json:"signature_url"`
 	// Type of signature: 'application/json', 'text/xml', 'text/pem'
@@ -33,13 +36,11 @@ type Cloud struct {
 	// Filesystem path: '/var/lib/cloud-what/cache/mycloud-token.json'
 	TokenCacheFile string `json:"token_cache_file"`
 	// Token validity, in seconds
-	TokenTTL int `json:"token_ttl"`
+	TokenTTL uint `json:"token_ttl"`
 	// Custom HTTP headers, like an User Agent
 	CustomHTTPHeaders map[string]string `json:"custom_http_headers"`
-	// Memory cache validity, in seconds
-	MemoryCacheTTL int `json:"memory_cache_ttl"`
 	// Connection timeout, in seconds
-	ServerTimeout int `json:"server_timeout"`
+	ServerTimeout uint `json:"server_timeout"`
 }
 
 // SystemRunsOnCloud inspects the instance of the cloud object using collected
@@ -48,7 +49,7 @@ type Cloud struct {
 func SystemRunsOnCloud(c CloudInstance) bool {
 	switch c.GetID() {
 	case "aws":
-		return c.systemRunsOn()
+		return c.SystemRunsOn()
 	default:
 		log.Errorf("RunsOnCloud is not implemented for %s.", c.GetID())
 		return false
@@ -61,7 +62,7 @@ func SystemRunsOnCloud(c CloudInstance) bool {
 func SystemMaybeRunsOnCloud(c CloudInstance) float64 {
 	switch c.GetID() {
 	case "aws":
-		return c.systemMaybeRunsOn()
+		return c.SystemMaybeRunsOn()
 	default:
 		log.Errorf("SystemMaybeRunsOnCloud is not implemented for %s.", c.GetID())
 		return 0.0
@@ -70,15 +71,16 @@ func SystemMaybeRunsOnCloud(c CloudInstance) float64 {
 
 // RemoteService is a wrapper around network calls.
 type RemoteService struct {
-	// Get performs a GET request using supplied 'client' to the 'request' remote.
+	// Call performs an HTTP request using supplied 'client' to the remove specified in 'request'.
 	Call func(client *http.Client, request *http.Request) (*http.Response, error)
 }
 
-// IdentityService is an instance of RemoteService structure. It directly calls http.* functions.
-// Those functions are overwritten by unit tests, allowing us to mock results.
+// IdentityService is an instance of RemoteService.
 var IdentityService = RemoteService{Call: call}
 
 // call performs a network request using method specified in request.
 func call(client *http.Client, request *http.Request) (*http.Response, error) {
+	// TODO Proxy settings can to be configured through client.Transport here
+	// TODO Logging of requests and replies can be done here
 	return client.Do(request)
 }

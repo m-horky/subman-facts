@@ -1,0 +1,17 @@
+{
+  "accountId" : "012345678900",
+  "architecture" : "x86_64",
+  "availabilityZone" : "eu-central-1b",
+  "billingProducts" : [ "bp-0124abcd", "bp-63a5400a" ],
+  "devpayProductCodes" : null,
+  "marketplaceProductCodes" : null,
+  "imageId" : "ami-0123456789abcdeff",
+  "instanceId" : "i-abcdef01234567890",
+  "instanceType" : "m5.large",
+  "kernelId" : null,
+  "pendingTime" : "2020-02-02T02:02:02Z",
+  "privateIp" : "12.34.56.78",
+  "ramdiskId" : null,
+  "region" : "eu-central-1",
+  "version" : "2017-09-30"
+}
